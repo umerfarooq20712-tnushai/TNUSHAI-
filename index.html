@@ -23,7 +23,7 @@
             overflow-x: hidden;
         }
 
-        /* --- INTRO SCREEN STYLES --- */
+        /* --- INTRO SCREEN (Uses Background.png) --- */
         #intro-overlay {
             position: fixed;
             top: 0;
@@ -37,7 +37,6 @@
             align-items: center;
             justify-content: center;
             z-index: 999;
-            transition: opacity 0.5s ease;
         }
 
         .intro-content {
@@ -49,7 +48,7 @@
             font-size: 1.8rem;
             letter-spacing: 3px;
             color: #ff3333;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-transform: uppercase;
             text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
@@ -57,8 +56,9 @@
         .hint-text {
             font-size: 0.9rem;
             color: #aaaaaa;
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             letter-spacing: 1px;
+            text-transform: lowercase;
         }
 
         .unlock-btn {
@@ -79,7 +79,7 @@
             color: #000;
         }
 
-        /* Fullscreen Video Player for Intro */
+        /* --- INTRO VIDEO CONTAINER (Uses Intro.mp4) --- */
         #intro-video-container {
             display: none;
             position: fixed;
@@ -99,7 +99,7 @@
             object-fit: contain;
         }
 
-        /* --- MAIN WEBSITE STYLES (Hidden until intro finishes) --- */
+        /* --- MAIN WEBSITE CONTENT --- */
         #main-content {
             display: none;
             text-align: center;
@@ -163,8 +163,8 @@
         </video>
     </div>
 
-    <!-- AUDIO FOR INTRO VOICE -->
-    <audio id="introAudio">
+    <!-- INTRO SONG AUDIO -->
+    <audio id="introSongAudio">
         <source src="Intro song.mp3" type="audio/mpeg">
     </audio>
 
@@ -172,7 +172,7 @@
     <div id="main-content">
         <h1>Find True Identity</h1>
         
-        <!-- Background Phonk Music -->
+        <!-- Background Phonk Music (Change filename if you add a phonk track later) -->
         <audio id="phonkAudio" loop>
             <source src="your-phonk-track.mp3" type="audio/mpeg">
         </audio>
@@ -189,28 +189,28 @@
         const introOverlay = document.getElementById('intro-overlay');
         const introVideoContainer = document.getElementById('intro-video-container');
         const introVideo = document.getElementById('introVideo');
-        const introAudio = document.getElementById('introAudio');
+        const introSongAudio = document.getElementById('introSongAudio');
         const mainContent = document.getElementById('main-content');
         const phonkAudio = document.getElementById('phonkAudio');
         const audioBtn = document.getElementById('audioBtn');
 
         function startExperience() {
-            // Hide intro buttons/background screen
+            // Hide the first image overlay
             introOverlay.style.display = 'none';
             
-            // Show video container
+            // Show the video container
             introVideoContainer.style.display = 'flex';
 
-            // Play intro voice audio and video simultaneously[span_1](start_span)[span_1](end_span)
-            introAudio.play().catch(e => console.log("Audio play blocked", e));
+            // Play the intro song and intro video together
+            introSongAudio.play().catch(e => console.log("Audio play blocked", e));
             introVideo.play().catch(e => console.log("Video play blocked", e));
 
-            // When intro video ends, hide video and reveal main website
+            // When Intro.mp4 finishes, hide video and show main page
             introVideo.onended = function() {
                 introVideoContainer.style.display = 'none';
                 mainContent.style.display = 'block';
                 
-                // Automatically start playing the main phonk track after intro
+                // Optional: Start main phonk track after intro
                 phonkAudio.play().catch(e => console.log("Phonk auto-play blocked", e));
                 audioBtn.textContent = "⏸ Pause Phonk";
             };
