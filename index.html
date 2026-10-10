@@ -15,7 +15,6 @@
 :root {
   color-scheme: dark;
   --primary: #ff1a1a;
-  --deep-red: #990000;
   --glow: rgba(255, 0, 0, .45);
   --panel: rgba(8, 8, 8, .88);
   --border: rgba(255, 26, 26, .8);
@@ -225,11 +224,6 @@ button:active {
   transition: box-shadow .25s, filter .25s;
 }
 
-.action:hover {
-  filter: brightness(1.2);
-  box-shadow: 0 0 32px rgba(255,0,0,.6);
-}
-
 .footer-code {
   margin-top: 21px;
   color: #686868;
@@ -333,75 +327,34 @@ video {
   letter-spacing: 1px;
 }
 
-/* CAT SCREEN */
+/* CAT SCREEN - FULL IMAGE VISIBLE */
 
 #catScreen {
-  background: #000 url("Cat.jpg") center / cover no-repeat;
+  background: #000 url("Cat.jpg") center / contain no-repeat;
   isolation: isolate;
-  text-align: center;
-}
-
-#catScreen::before,
-#musicScreen::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.48), rgba(0,0,0,.78));
+  justify-content: flex-end;
+  padding-bottom: max(40px, env(safe-area-inset-bottom));
 }
 
 .cat-content {
   position: relative;
   z-index: 5;
-  width: min(400px, 100%);
+  width: min(340px, 90vw);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 27px;
-}
-
-.cat-msg1 {
-  font-family: var(--display);
-  font-weight: 700;
-  font-size: clamp(1.05rem, 4.5vw, 1.4rem);
-  line-height: 1.65;
-  color: #fff;
-  text-shadow: 0 2px 12px #000, 0 0 15px rgba(255,0,0,.2);
-}
-
-.cat-msg2-box {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-}
-
-.cat-msg2 {
-  font-size: .96rem;
-  line-height: 1.6;
-  color: #ffdede;
-  text-shadow: 0 2px 8px #000;
-}
-
-.arrows {
-  color: var(--primary);
-  font-size: 1.25rem;
-  letter-spacing: 5px;
-  text-shadow: 0 0 12px var(--primary);
 }
 
 .sad-songs-btn {
   width: 100%;
-  padding: 16px 20px;
-  background: rgba(0,0,0,.88);
-  border: 1px solid #fff;
+  padding: 15px 20px;
+  background: rgba(0,0,0,0.85);
+  border: 2px solid #fff;
   color: #fff;
-  font: 800 .95rem var(--display);
+  font: 800 1rem var(--display);
   letter-spacing: 2px;
-  border-radius: 7px;
-  box-shadow: 0 0 20px rgba(255,255,255,.17);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.8);
   transition: border-color .25s, box-shadow .25s;
 }
 
@@ -410,89 +363,71 @@ video {
   box-shadow: 0 0 25px var(--glow);
 }
 
-/* MUSIC PLAYER */
+/* MUSIC PLAYER - FULL IMAGE VISIBLE */
 
 #musicScreen {
-  background: #000 url("Dog.jpg") center / cover no-repeat;
+  background: #000 url("Dog.jpg") center / contain no-repeat;
   isolation: isolate;
-  text-align: center;
+  justify-content: flex-end;
+  padding-bottom: max(30px, env(safe-area-inset-bottom));
 }
 
 .music-panel {
   position: relative;
   z-index: 5;
-  width: min(365px, 100%);
-  padding: 31px 23px;
+  width: min(340px, 90vw);
+  padding: 20px 18px;
   border: 1px solid var(--primary);
-  border-radius: 13px;
-  background: rgba(8,8,8,.9);
-  box-shadow: 0 0 40px var(--glow), inset 0 0 25px rgba(255,0,0,.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.music-icon {
-  width: 68px;
-  height: 68px;
-  margin: 0 auto 20px;
-  display: grid;
-  place-items: center;
-  border: 1px solid var(--primary);
-  border-radius: 50%;
-  color: var(--primary);
-  font-size: 1.8rem;
-  box-shadow: 0 0 25px rgba(255,0,0,.22);
+  border-radius: 12px;
+  background: rgba(8,8,8,0.92);
+  box-shadow: 0 0 30px var(--glow);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  text-align: center;
 }
 
 .music-title {
   font-family: var(--display);
   color: var(--primary);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 800;
   letter-spacing: 2px;
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .music-sub {
   color: #ddd;
-  font-size: .9rem;
-  margin-bottom: 17px;
+  font-size: .85rem;
+  margin-bottom: 12px;
 }
 
 .music-status {
-  min-height: 21px;
+  min-height: 18px;
   color: #ff8b8b;
-  font-size: .78rem;
-  margin-bottom: 21px;
+  font-size: .75rem;
+  margin-bottom: 14px;
 }
 
 .player-controls {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   flex-direction: column;
 }
 
 .player-btn {
   width: 100%;
-  padding: 13px;
+  padding: 11px;
   border: 1px solid var(--primary);
   border-radius: 6px;
   background: linear-gradient(135deg, #e71919, #760000);
   color: white;
-  font: 700 .8rem var(--display);
+  font: 700 .75rem var(--display);
   letter-spacing: 1px;
 }
 
 .player-btn.secondary {
   background: rgba(0,0,0,.65);
   border-color: #777;
-}
-
-.small-note {
-  margin-top: 18px;
-  color: #888;
-  font-size: .7rem;
-  line-height: 1.6;
 }
 </style>
 </head>
@@ -565,26 +500,10 @@ video {
 
 <!-- CAT SCREEN -->
 <section class="screen" id="catScreen" aria-label="Final message">
-  <div class="vignette"></div>
-
   <div class="cat-content">
-    <div class="eyebrow">◈ ACCESS DENIED</div>
-
-    <div class="cat-msg1">
-      brother you can't know who am I you wasted your time 😊
-    </div>
-
-    <div class="cat-msg2-box">
-      <div class="cat-msg2">
-        don't be sad you can listen to songs
-      </div>
-
-      <div class="arrows" aria-hidden="true">↓↓↓↓↓</div>
-
-      <button class="sad-songs-btn" id="sadSongsBtn" type="button">
-        ♫ &nbsp; sad songs
-      </button>
-    </div>
+    <button class="sad-songs-btn" id="sadSongsBtn" type="button">
+      sad songs
+    </button>
   </div>
 
   <button class="nav-btn" id="catBack" type="button">
@@ -594,18 +513,12 @@ video {
 
 <!-- MUSIC PLAYER -->
 <section class="screen" id="musicScreen" aria-label="Music player">
-  <div class="vignette"></div>
-
   <div class="music-panel">
-    <div class="eyebrow">◈ AUDIO INTERFACE // 003</div>
-
-    <div class="music-icon" id="musicIcon" aria-hidden="true">♫</div>
-
     <h2 class="music-title">NOW PLAYING</h2>
     <p class="music-sub">Lorha.mp3</p>
 
     <p class="music-status" id="musicStatus" role="status" aria-live="polite">
-      INITIALIZING AUDIO...
+      PLAYING AUDIO...
     </p>
 
     <div class="player-controls">
@@ -617,11 +530,6 @@ video {
         ← PREVIOUS MENU
       </button>
     </div>
-
-    <p class="small-note">
-      CLASSIFIED AUDIO CHANNEL<br>
-      SESSION SECURED
-    </p>
   </div>
 </section>
 
@@ -685,7 +593,6 @@ function navigateTo(id) {
   showScreen(id);
 }
 
-// INTRO SCREEN & AUDIO
 async function playIntro() {
   if (currentScreen !== "intro") return;
   pauseAndReset(introVideo);
@@ -722,7 +629,6 @@ introVideo.addEventListener("error", () => {
 
 $("introBack").addEventListener("click", () => navigateTo("home"));
 
-// FUTURE ANIMATION & 55s TIMER
 function updateTimer() {
   const seconds = Math.max(0, timeLeft);
   const minutesText = String(Math.floor(seconds / 60)).padStart(2, "0");
@@ -774,7 +680,6 @@ $("skip").addEventListener("click", showCatScreen);
 futureVideo.addEventListener("ended", showCatScreen);
 futureVideo.addEventListener("error", showCatScreen);
 
-// CAT SCREEN
 function showCatScreen() {
   stopAllMedia();
   showScreen("catScreen");
@@ -793,7 +698,6 @@ $("sadSongsBtn").addEventListener("click", () => {
   playLorhaSong();
 });
 
-// MUSIC PLAYER
 async function playLorhaSong() {
   musicStatus.textContent = "PLAYING AUDIO...";
   lorhaSong.currentTime = 0;
@@ -820,5 +724,5 @@ playPause.addEventListener("click", () => {
 $("backToCat").addEventListener("click", showCatScreen);
 </script>
 </body>
- </html>
-                                           
+  </html>
+  
