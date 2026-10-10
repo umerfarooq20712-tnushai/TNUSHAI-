@@ -4,186 +4,821 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080808">
+<meta name="description" content="CLASSIFIED — WHO AM I. Access restricted.">
 <title>CLASSIFIED — WHO AM I</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
- --primary:#ff1a1a;
- --glow:rgba(255,0,0,.45);
- --gradient:linear-gradient(135deg,#ff0000,#990000);
- --panel:rgba(8,8,8,.88);
-}
-html,body{
- width:100%;min-height:100%;background:#080808;color:#fff;
- font-family:"Share Tech Mono",monospace;
-}
-body{min-height:100vh;min-height:100dvh;overflow:hidden}
-button{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-
-.screen{
- position:fixed;inset:0;display:none;
- align-items:center;justify-content:center;
-}
-.screen.active{display:flex}
-
-#home{
- background:#000 url("back%20ground.png") center/cover no-repeat;
- z-index:10;padding:20px;
-}
-#home:before{
- content:"";position:absolute;inset:0;background:rgba(0,0,0,.48);
-}
-#particles{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.panel{
- position:relative;z-index:2;width:min(390px,94vw);
- padding:32px 23px;text-align:center;
- background:var(--panel);border:2px solid var(--primary);
- border-radius:16px;backdrop-filter:blur(12px);
- -webkit-backdrop-filter:blur(12px);
- box-shadow:0 0 35px var(--glow);
-}
-.title{
- color:var(--primary);font-family:Orbitron,sans-serif;
- font-weight:900;text-transform:uppercase;font-size:clamp(1.45rem,6vw,2.15rem);line-height:1.3;
-}
-.subtitle{margin:13px 0 26px;color:#ddd;letter-spacing:2px}
-.action{
- width:100%;padding:15px 12px;border:2px solid var(--primary);
- border-radius:9px;background:var(--gradient);color:#fff;
- font:700 .95rem Orbitron,sans-serif;
- box-shadow:0 0 18px var(--glow);
+:root {
+  color-scheme: dark;
+  --primary: #ff1a1a;
+  --deep-red: #990000;
+  --glow: rgba(255, 0, 0, .45);
+  --panel: rgba(8, 8, 8, .88);
+  --border: rgba(255, 26, 26, .8);
+  --text: #f5f5f5;
+  --muted: #b7b7b7;
+  --mono: "Share Tech Mono", monospace;
+  --display: "Orbitron", sans-serif;
 }
 
-#intro,#future{background:#000;z-index:20}
-video{display:block;width:100%;height:100%;object-fit:contain;background:#000}
-
-#future{z-index:30}
-.timer-badge{
- position:absolute;top:20px;right:20px;z-index:35;
- background:rgba(0,0,0,0.8);border:2px solid var(--primary);
- color:var(--primary);padding:8px 14px;border-radius:6px;
- font:700 1rem Orbitron,sans-serif;box-shadow:0 0 15px var(--glow);
-}
-.skip{
- position:absolute;right:18px;bottom:max(20px,env(safe-area-inset-bottom));
- z-index:32;padding:12px 18px;border:2px solid var(--primary);
- background:rgba(0,0,0,.9);color:white;border-radius:8px;
- font:700 .85rem Orbitron,sans-serif;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Cat.jpg Screen */
-#catScreen{
- background:#000 url("Cat.jpg") center/cover no-repeat;
- z-index:40;flex-direction:column;justify-content:center;align-items:center;
- padding:30px 20px;text-align:center;
+html, body {
+  width: 100%;
+  min-height: 100%;
+  background: #080808;
+  color: var(--text);
+  font-family: var(--mono);
 }
-#catScreen::before{
- content:"";position:absolute;inset:0;background:rgba(0,0,0,0.5);z-index:1;
-}
-.cat-content{
- position:relative;z-index:2;width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;gap:25px;
-}
-.cat-msg1{
- font-family:Orbitron,sans-serif;font-weight:700;font-size:clamp(1.05rem,4vw,1.3rem);
- color:#fff;text-shadow:0 2px 8px rgba(0,0,0,0.9);line-height:1.4;
-}
-.cat-msg2-box{display:flex;flex-direction:column;align-items:center;gap:8px;width:100%}
-.cat-msg2{
- font-size:1rem;color:#ffdede;text-shadow:0 2px 6px rgba(0,0,0,0.9);
-}
-.arrows{font-size:1.2rem;color:var(--primary);letter-spacing:4px;font-weight:bold}
-.sad-songs-btn{
- width:100%;padding:14px 20px;background:#000;border:2px solid #fff;color:#fff;
- font:700 1.1rem Orbitron,sans-serif;border-radius:8px;
- box-shadow:0 0 20px rgba(255,255,255,0.4);transition:0.2s;
-}
-.sad-songs-btn:active{transform:scale(0.95)}
 
-/* Dog.jpg & Lorha.mp3 Player Screen */
-#musicScreen{
- background:#000 url("Dog.jpg") center/cover no-repeat;
- z-index:50;flex-direction:column;justify-content:center;align-items:center;
- padding:20px;text-align:center;
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
-#musicScreen::before{
- content:"";position:absolute;inset:0;background:rgba(0,0,0,0.6);z-index:1;
+
+button {
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
-.music-panel{
- position:relative;z-index:2;background:rgba(15,15,15,0.9);
- border:2px solid var(--primary);padding:30px;border-radius:16px;
- width:min(350px,90vw);box-shadow:0 0 35px var(--glow);
+
+button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 4px;
 }
-.music-title{font-family:Orbitron,sans-serif;color:var(--primary);font-size:1.3rem;margin-bottom:15px}
-.music-sub{color:#ddd;font-size:0.95rem;margin-bottom:25px}
-.back-btn{
- padding:10px 20px;background:var(--gradient);border:1px solid var(--primary);
- color:#fff;border-radius:6px;font:700 0.9rem Orbitron,sans-serif;
+
+button:active {
+  transform: scale(.97);
+}
+
+/* SCREEN TRANSITIONS */
+
+.screen {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding:
+    max(18px, env(safe-area-inset-top))
+    max(16px, env(safe-area-inset-right))
+    max(18px, env(safe-area-inset-bottom))
+    max(16px, env(safe-area-inset-left));
+
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.025);
+  transition:
+    opacity .45s ease,
+    transform .55s cubic-bezier(.2,.7,.2,1),
+    visibility 0s linear .55s;
+}
+
+.screen.active {
+  z-index: 10;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+  transition:
+    opacity .45s ease,
+    transform .55s cubic-bezier(.2,.7,.2,1),
+    visibility 0s;
+}
+
+/* BACKGROUND EFFECTS */
+
+#home {
+  background: #000 url("back%20ground.png") center / cover no-repeat;
+  isolation: isolate;
+}
+
+#home::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.58), rgba(0,0,0,.25), rgba(0,0,0,.8)),
+    radial-gradient(ellipse at center, transparent 10%, rgba(0,0,0,.72) 100%);
+  pointer-events: none;
+}
+
+#particles {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  pointer-events: none;
+  opacity: .15;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(255, 0, 0, .12) 4px
+  );
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  box-shadow: inset 0 0 100px rgba(0,0,0,.8);
+}
+
+/* HOME TERMINAL */
+
+.panel {
+  position: relative;
+  z-index: 5;
+  width: min(410px, 100%);
+  padding: 34px 23px 27px;
+  text-align: center;
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow:
+    0 0 15px rgba(255,0,0,.14),
+    0 0 45px var(--glow),
+    inset 0 0 25px rgba(255,0,0,.045);
+}
+
+.eyebrow {
+  margin-bottom: 16px;
+  color: #ff7777;
+  font-size: .68rem;
+  letter-spacing: 3px;
+}
+
+.title {
+  color: var(--primary);
+  font-family: var(--display);
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: clamp(1.65rem, 8vw, 2.5rem);
+  line-height: 1.3;
+  letter-spacing: 1px;
+  text-shadow: 0 0 12px rgba(255,0,0,.8), 0 0 35px rgba(255,0,0,.35);
+}
+
+.subtitle {
+  margin: 12px 0 25px;
+  color: #ddd;
+  font-size: .95rem;
+  letter-spacing: 3px;
+}
+
+.terminal-line {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 23px;
+  color: var(--muted);
+  font-size: .76rem;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 10px var(--primary);
+}
+
+.action {
+  width: 100%;
+  padding: 15px 12px;
+  border: 1px solid #ff5555;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #ff2020, #8e0000);
+  color: #fff;
+  font: 800 .9rem var(--display);
+  letter-spacing: 1px;
+  box-shadow: 0 0 22px rgba(255,0,0,.3);
+  transition: box-shadow .25s, filter .25s;
+}
+
+.action:hover {
+  filter: brightness(1.2);
+  box-shadow: 0 0 32px rgba(255,0,0,.6);
+}
+
+.footer-code {
+  margin-top: 21px;
+  color: #686868;
+  font-size: .66rem;
+  letter-spacing: 2px;
+}
+
+/* MEDIA SCREENS */
+
+#intro, #future {
+  background: #000;
+  padding: 0;
+}
+
+.media-frame {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+}
+
+video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.media-shade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.2), transparent 25%, transparent 75%, rgba(0,0,0,.3));
+}
+
+.media-label {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  left: max(18px, env(safe-area-inset-left));
+  z-index: 25;
+  padding: 9px 12px;
+  color: #ff6c6c;
+  background: rgba(0,0,0,.72);
+  border-left: 2px solid var(--primary);
+  font-size: .7rem;
+  letter-spacing: 2px;
+  pointer-events: none;
+}
+
+.timer-badge {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(18px, env(safe-area-inset-right));
+  z-index: 25;
+  min-width: 95px;
+  padding: 10px 13px;
+  text-align: center;
+  background: rgba(0,0,0,.8);
+  border: 1px solid var(--primary);
+  border-radius: 5px;
+  color: var(--primary);
+  font: 800 1rem var(--display);
+  box-shadow: 0 0 18px var(--glow);
+  pointer-events: none;
+}
+
+.timer-badge.urgent {
+  color: #fff;
+  background: #8c0000;
+}
+
+.nav-btn {
+  position: absolute;
+  left: max(18px, env(safe-area-inset-left));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  z-index: 30;
+  padding: 12px 15px;
+  color: #fff;
+  border: 1px solid rgba(255,50,50,.85);
+  border-radius: 7px;
+  background: rgba(5,5,5,.9);
+  font: 700 .75rem var(--display);
+  letter-spacing: .5px;
+  box-shadow: 0 0 15px rgba(255,0,0,.18);
+}
+
+.skip {
+  position: absolute;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(22px, env(safe-area-inset-bottom));
+  z-index: 30;
+  padding: 12px 18px;
+  border: 1px solid var(--primary);
+  background: rgba(0,0,0,.9);
+  color: white;
+  border-radius: 7px;
+  font: 700 .8rem var(--display);
+  letter-spacing: 1px;
+}
+
+/* CAT SCREEN */
+
+#catScreen {
+  background: #000 url("Cat.jpg") center / cover no-repeat;
+  isolation: isolate;
+  text-align: center;
+}
+
+#catScreen::before,
+#musicScreen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(0,0,0,.62), rgba(0,0,0,.48), rgba(0,0,0,.78));
+}
+
+.cat-content {
+  position: relative;
+  z-index: 5;
+  width: min(400px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 27px;
+}
+
+.cat-msg1 {
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: clamp(1.05rem, 4.5vw, 1.4rem);
+  line-height: 1.65;
+  color: #fff;
+  text-shadow: 0 2px 12px #000, 0 0 15px rgba(255,0,0,.2);
+}
+
+.cat-msg2-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cat-msg2 {
+  font-size: .96rem;
+  line-height: 1.6;
+  color: #ffdede;
+  text-shadow: 0 2px 8px #000;
+}
+
+.arrows {
+  color: var(--primary);
+  font-size: 1.25rem;
+  letter-spacing: 5px;
+  text-shadow: 0 0 12px var(--primary);
+}
+
+.sad-songs-btn {
+  width: 100%;
+  padding: 16px 20px;
+  background: rgba(0,0,0,.88);
+  border: 1px solid #fff;
+  color: #fff;
+  font: 800 .95rem var(--display);
+  letter-spacing: 2px;
+  border-radius: 7px;
+  box-shadow: 0 0 20px rgba(255,255,255,.17);
+  transition: border-color .25s, box-shadow .25s;
+}
+
+.sad-songs-btn:hover {
+  border-color: var(--primary);
+  box-shadow: 0 0 25px var(--glow);
+}
+
+/* MUSIC PLAYER */
+
+#musicScreen {
+  background: #000 url("Dog.jpg") center / cover no-repeat;
+  isolation: isolate;
+  text-align: center;
+}
+
+.music-panel {
+  position: relative;
+  z-index: 5;
+  width: min(365px, 100%);
+  padding: 31px 23px;
+  border: 1px solid var(--primary);
+  border-radius: 13px;
+  background: rgba(8,8,8,.9);
+  box-shadow: 0 0 40px var(--glow), inset 0 0 25px rgba(255,0,0,.04);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.music-icon {
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 20px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--primary);
+  border-radius: 50%;
+  color: var(--primary);
+  font-size: 1.8rem;
+  box-shadow: 0 0 25px rgba(255,0,0,.22);
+}
+
+.music-title {
+  font-family: var(--display);
+  color: var(--primary);
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 12px;
+}
+
+.music-sub {
+  color: #ddd;
+  font-size: .9rem;
+  margin-bottom: 17px;
+}
+
+.music-status {
+  min-height: 21px;
+  color: #ff8b8b;
+  font-size: .78rem;
+  margin-bottom: 21px;
+}
+
+.player-controls {
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.player-btn {
+  width: 100%;
+  padding: 13px;
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  background: linear-gradient(135deg, #e71919, #760000);
+  color: white;
+  font: 700 .8rem var(--display);
+  letter-spacing: 1px;
+}
+
+.player-btn.secondary {
+  background: rgba(0,0,0,.65);
+  border-color: #777;
+}
+
+.small-note {
+  margin-top: 18px;
+  color: #888;
+  font-size: .7rem;
+  line-height: 1.6;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 1. HOME SCREEN -->
-<section class="screen active" id="home">
- <canvas id="particles"></canvas>
- <div class="panel">
-  <div class="title">WHO AM I</div>
-  <p class="subtitle">you can't find me</p>
-  <button class="action" id="enter">TAP TO ENTER</button>
- </div>
+<!-- HOME -->
+<section class="screen active" id="home" aria-label="Home">
+  <canvas id="particles" aria-hidden="true"></canvas>
+  <div class="vignette"></div>
+
+  <main class="panel">
+    <div class="eyebrow">◈ SECURE TERMINAL // 001</div>
+    <h1 class="title">WHO AM I</h1>
+    <p class="subtitle">you can't find me</p>
+
+    <div class="terminal-line">
+      <span class="status-dot"></span>
+      <span id="terminalStatus">SYSTEM READY — AWAITING INPUT</span>
+    </div>
+
+    <button class="action" id="enter" type="button">
+      [ TAP TO ENTER ]
+    </button>
+
+    <p class="footer-code">ACCESS LEVEL: CLASSIFIED</p>
+  </main>
 </section>
 
-<!-- 2. INTRO VIDEO -->
-<section class="screen" id="intro">
- <video id="introVideo" playsinline preload="auto">
-  <source src="Intro.mp4" type="video/mp4">
- </video>
+<!-- INTRO VIDEO -->
+<section class="screen" id="intro" aria-label="Introduction video">
+  <div class="media-frame">
+    <video id="introVideo" playsinline preload="auto">
+      <source src="Intro.mp4" type="video/mp4">
+    </video>
+    <div class="media-shade"></div>
+  </div>
+
+  <div class="media-label">01 // INITIALIZING</div>
+
+  <button class="nav-btn" id="introBack" type="button">
+    ← PREVIOUS MENU
+  </button>
 </section>
 
 <audio id="introSong" preload="auto">
- <source src="Intro%20song.mp3" type="audio/mpeg">
+  <source src="Intro%20song.mp3" type="audio/mpeg">
 </audio>
 
-<!-- 3. FUTURE ANIMATION WITH TIMER -->
-<section class="screen" id="future">
- <div class="timer-badge" id="timerBadge">00:55</div>
- <video id="futureVideo" playsinline preload="auto">
-  <source src="Future%20animation.mp4" type="video/mp4">
- </video>
- <button class="skip" id="skip">SKIP ↗</button>
-</section>
-
-<!-- 4. CAT.JPG SCREEN -->
-<section class="screen" id="catScreen">
- <div class="cat-content">
-  <div class="cat-msg1">brother you can't know who am I you wasted your time 😊</div>
-  <div class="cat-msg2-box">
-   <div class="cat-msg2">don't be sad you can listen to songs</div>
-   <div class="arrows">↓↓↓↓↓</div>
-   <button class="sad-songs-btn" id="sadSongsBtn">sad songs</button>
+<!-- FUTURE ANIMATION -->
+<section class="screen" id="future" aria-label="Future animation">
+  <div class="media-frame">
+    <video id="futureVideo" playsinline preload="auto">
+      <source src="Future%20animation.mp4" type="video/mp4">
+    </video>
+    <div class="media-shade"></div>
   </div>
- </div>
+
+  <div class="media-label">02 // FUTURE PROTOCOL</div>
+  <div class="timer-badge" id="timerBadge" aria-live="off">00:55</div>
+
+  <button class="nav-btn" id="futureBack" type="button">
+    ← PREVIOUS MENU
+  </button>
+
+  <button class="skip" id="skip" type="button">
+    SKIP ↗
+  </button>
 </section>
 
-<!-- 5. DOG.JPG & LORHA.MP3 PLAYER SCREEN -->
-<section class="screen" id="musicScreen">
- <div class="music-panel">
-  <div class="music-title">NOW PLAYING</div>
-  <div class="music-sub">Lorha.mp3</div>
-  <button class="back-btn" id="backToCat">BACK</button>
- </div>
+<!-- CAT SCREEN -->
+<section class="screen" id="catScreen" aria-label="Final message">
+  <div class="vignette"></div>
+
+  <div class="cat-content">
+    <div class="eyebrow">◈ ACCESS DENIED</div>
+
+    <div class="cat-msg1">
+      brother you can't know who am I you wasted your time 😊
+    </div>
+
+    <div class="cat-msg2-box">
+      <div class="cat-msg2">
+        don't be sad you can listen to songs
+      </div>
+
+      <div class="arrows" aria-hidden="true">↓↓↓↓↓</div>
+
+      <button class="sad-songs-btn" id="sadSongsBtn" type="button">
+        ♫ &nbsp; sad songs
+      </button>
+    </div>
+  </div>
+
+  <button class="nav-btn" id="catBack" type="button">
+    ← PREVIOUS MENU
+  </button>
+</section>
+
+<!-- MUSIC PLAYER -->
+<section class="screen" id="musicScreen" aria-label="Music player">
+  <div class="vignette"></div>
+
+  <div class="music-panel">
+    <div class="eyebrow">◈ AUDIO INTERFACE // 003</div>
+
+    <div class="music-icon" id="musicIcon" aria-hidden="true">♫</div>
+
+    <h2 class="music-title">NOW PLAYING</h2>
+    <p class="music-sub">Lorha.mp3</p>
+
+    <p class="music-status" id="musicStatus" role="status" aria-live="polite">
+      INITIALIZING AUDIO...
+    </p>
+
+    <div class="player-controls">
+      <button class="player-btn" id="playPause" type="button">
+        ❚❚ PAUSE
+      </button>
+
+      <button class="player-btn secondary" id="backToCat" type="button">
+        ← PREVIOUS MENU
+      </button>
+    </div>
+
+    <p class="small-note">
+      CLASSIFIED AUDIO CHANNEL<br>
+      SESSION SECURED
+    </p>
+  </div>
 </section>
 
 <audio id="lorhaSong" loop preload="auto">
- <source src="Lorha.mp3" type="audio/mpeg">
+  <source src="Lorha.mp3" type="audio/mpeg">
 </audio>
 
+<div class="scanlines" aria-hidden="true"></div>
+
 <script>
-"use strict
-  
+"use strict";
+
+const $ = id => document.getElementById(id);
+const screens = [...document.querySelectorAll(".screen")];
+
+const introVideo = $("introVideo");
+const futureVideo = $("futureVideo");
+const introSong = $("introSong");
+const lorhaSong = $("lorhaSong");
+
+const timerBadge = $("timerBadge");
+const terminalStatus = $("terminalStatus");
+const musicStatus = $("musicStatus");
+const playPause = $("playPause");
+
+let currentScreen = "home";
+let timerInterval = null;
+let timeLeft = 55;
+
+function showScreen(id) {
+  currentScreen = id;
+  screens.forEach(screen => {
+    const active = screen.id === id;
+    screen.classList.toggle("active", active);
+    screen.setAttribute("aria-hidden", String(!active));
+    screen.inert = !active;
+  });
+  if (id === "home") {
+    terminalStatus.textContent = "SYSTEM READY — AWAITING INPUT";
+  }
+}
+
+function pauseAndReset(media) {
+  media.pause();
+  try {
+    media.currentTime = 0;
+  } catch (_) {}
+}
+
+function stopAllMedia() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  pauseAndReset(introVideo);
+  pauseAndReset(futureVideo);
+  pauseAndReset(introSong);
+  pauseAndReset(lorhaSong);
+}
+
+function navigateTo(id) {
+  stopAllMedia();
+  showScreen(id);
+}
+
+// INTRO SCREEN & AUDIO
+async function playIntro() {
+  if (currentScreen !== "intro") return;
+  pauseAndReset(introVideo);
+  pauseAndReset(introSong);
+
+  let songPromise = introSong.play().catch(() => false);
+  try {
+    await introVideo.play();
+  } catch (error) {
+    startFutureAnimation();
+    return;
+  }
+  await songPromise;
+}
+
+$("enter").addEventListener("click", async () => {
+  stopAllMedia();
+  showScreen("intro");
+  terminalStatus.textContent = "ACCESS GRANTED — INITIALIZING";
+  await playIntro();
+});
+
+introVideo.addEventListener("ended", () => {
+  if (currentScreen === "intro") {
+    startFutureAnimation();
+  }
+});
+
+introVideo.addEventListener("error", () => {
+  if (currentScreen === "intro") {
+    startFutureAnimation();
+  }
+});
+
+$("introBack").addEventListener("click", () => navigateTo("home"));
+
+// FUTURE ANIMATION & 55s TIMER
+function updateTimer() {
+  const seconds = Math.max(0, timeLeft);
+  const minutesText = String(Math.floor(seconds / 60)).padStart(2, "0");
+  const secondsText = String(seconds % 60).padStart(2, "0");
+  timerBadge.textContent = `${minutesText}:${secondsText}`;
+  timerBadge.classList.toggle("urgent", seconds <= 10);
+}
+
+function startCountdown() {
+  clearInterval(timerInterval);
+  timeLeft = 55;
+  const startedAt = Date.now();
+  updateTimer();
+
+  timerInterval = setInterval(() => {
+    if (currentScreen !== "future") {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      return;
+    }
+    const elapsed = Math.floor((Date.now() - startedAt) / 1000);
+    timeLeft = Math.max(0, 55 - elapsed);
+    updateTimer();
+
+    if (timeLeft <= 0) {
+      showCatScreen();
+    }
+  }, 250);
+}
+
+function startFutureAnimation() {
+  if (currentScreen === "future") return;
+  stopAllMedia();
+  showScreen("future");
+  pauseAndReset(futureVideo);
+
+  futureVideo.play().catch(() => {});
+  startCountdown();
+}
+
+$("futureBack").addEventListener("click", () => {
+  stopAllMedia();
+  showScreen("intro");
+  playIntro();
+});
+
+$("skip").addEventListener("click", showCatScreen);
+
+futureVideo.addEventListener("ended", showCatScreen);
+futureVideo.addEventListener("error", showCatScreen);
+
+// CAT SCREEN
+function showCatScreen() {
+  stopAllMedia();
+  showScreen("catScreen");
+}
+
+$("catBack").addEventListener("click", () => {
+  stopAllMedia();
+  showScreen("future");
+  futureVideo.play().catch(() => {});
+  startCountdown();
+});
+
+$("sadSongsBtn").addEventListener("click", () => {
+  stopAllMedia();
+  showScreen("musicScreen");
+  playLorhaSong();
+});
+
+// MUSIC PLAYER
+async function playLorhaSong() {
+  musicStatus.textContent = "PLAYING AUDIO...";
+  lorhaSong.currentTime = 0;
+  try {
+    await lorhaSong.play();
+    playPause.textContent = "❚❚ PAUSE";
+  } catch (e) {
+    musicStatus.textContent = "TAP PAUSE/PLAY TO START";
+  }
+}
+
+playPause.addEventListener("click", () => {
+  if (lorhaSong.paused) {
+    lorhaSong.play();
+    playPause.textContent = "❚❚ PAUSE";
+    musicStatus.textContent = "PLAYING AUDIO...";
+  } else {
+    lorhaSong.pause();
+    playPause.textContent = "▶ PLAY";
+    musicStatus.textContent = "AUDIO PAUSED";
+  }
+});
+
+$("backToCat").addEventListener("click", showCatScreen);
+</script>
+</body>
+ </html>
+                                           
