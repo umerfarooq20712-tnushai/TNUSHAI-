@@ -69,7 +69,6 @@
     .intro-title { font: 900 clamp(1.55rem, 7vw, 2.2rem)/1.2 Orbitron, sans-serif; letter-spacing: 1px; color: var(--primary-color); margin-bottom: 12px; text-transform: uppercase; text-shadow: 0 0 15px var(--primary-glow), 0 0 30px var(--primary-glow); }
     .hint-text { font-size: 1.05rem; color: #ddd; margin-bottom: 28px; letter-spacing: 2px; text-transform: lowercase; text-shadow: 0 0 5px rgba(255,255,255,.5); }
     .unlock-btn { background: var(--bg-gradient); border: 2px solid var(--primary-color); color: #fff; padding: 16px 20px; font: 700 1.05rem Orbitron, sans-serif; letter-spacing: 1.5px; cursor: pointer; border-radius: 10px; width: 100%; box-shadow: 0 0 20px var(--shadow-color); animation: pulse-glow 2s infinite alternate; }
-    .skip-btn { margin-top: 14px; background: transparent; border: 1px solid rgba(255,255,255,.25); color: #ddd; padding: 9px 14px; border-radius: 7px; font: .8rem "Share Tech Mono", monospace; cursor: pointer; }
     @keyframes pulse-glow { from { box-shadow: 0 0 15px var(--shadow-color); } to { box-shadow: 0 0 35px var(--primary-glow); } }
     #intro-video-container { display: none; position: fixed; inset: 0; background: #000; z-index: 100000; justify-content: center; align-items: center; }
     #introVideo { width: 100%; height: 100%; object-fit: contain; background: #000; }
@@ -79,7 +78,6 @@
     .audio-control { background: #1a1a1a; border: 2px solid var(--primary-color); color: #fff; padding: 15px 22px; font: 600 1rem Orbitron, sans-serif; cursor: pointer; border-radius: 8px; box-shadow: 0 0 15px var(--shadow-color); }
     .audio-control:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
     .status-text { margin-top: 16px; color: #aaa; font-size: .85rem; min-height: 1.2em; }
-    .easter-egg { margin-top: 46px; font-size: .75rem; line-height: 1.6; color: #777; }
     @media (max-width: 420px) { .intro-box { padding: 30px 18px; } .hint-text { font-size: .95rem; } }
   </style>
 </head>
@@ -104,7 +102,6 @@
       <div class="intro-title">WHO IS MONTAGEM</div>
       <div class="hint-text">you can't find me</div>
       <button class="unlock-btn" id="enterBtn" type="button">Tap to Enter</button>
-      <div><button class="skip-btn" id="skipIntroBtn" type="button">Skip intro video</button></div>
     </div>
   </section>
 
@@ -127,7 +124,6 @@
     </audio>
     <button class="audio-control" id="audioBtn" type="button">▶ Play Phonk</button>
     <p class="status-text" id="audioStatus" role="status" aria-live="polite"></p>
-    <div class="easter-egg">If you're reading this, you aren't a stranger. You already know who built this.</div>
   </main>
 
   <script>
@@ -360,7 +356,6 @@
     }
 
     document.getElementById("enterBtn").addEventListener("click", startExperience);
-    document.getElementById("skipIntroBtn").addEventListener("click", showMainContent);
     document.getElementById("videoSkipBtn").addEventListener("click", showMainContent);
     introVideo.addEventListener("ended", showMainContent);
     introVideo.addEventListener("error", () => {
@@ -385,4 +380,5 @@
     audioBtn.addEventListener("click", togglePhonk);
   </script>
 </body>
-</html>
+  </html>
+  
