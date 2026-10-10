@@ -18,7 +18,7 @@
             --primary-glow: rgba(255, 0, 0, 0.8);
             --border-color: rgba(255, 0, 0, 0.7);
             --bg-gradient: linear-gradient(135deg, #ff0000, #990000);
-            --box-bg: rgba(10, 10, 10, 0.82);
+            --box-bg: rgba(10, 10, 10, 0.85);
             --shadow-color: rgba(255, 0, 0, 0.45);
         }
 
@@ -39,7 +39,7 @@
             position: fixed;
             top: 20px;
             left: 20px;
-            background: rgba(15, 15, 15, 0.9);
+            background: rgba(15, 15, 15, 0.95);
             border: 2px solid var(--primary-color);
             color: #fff;
             width: 48px;
@@ -51,7 +51,7 @@
             align-items: center;
             gap: 5px;
             cursor: pointer;
-            z-index: 10001;
+            z-index: 20000;
             box-shadow: 0 0 15px var(--shadow-color);
             transition: 0.3s ease;
         }
@@ -72,14 +72,14 @@
             left: -290px;
             width: 270px;
             height: 100%;
-            background: rgba(10, 10, 10, 0.96);
+            background: rgba(10, 10, 10, 0.98);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-right: 2px solid var(--primary-color);
-            z-index: 10000;
+            z-index: 19999;
             transition: left 0.4s ease;
             padding: 85px 20px 20px 20px;
-            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.9);
         }
 
         .menu-drawer.open {
@@ -107,9 +107,9 @@
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.15);
             color: #ccc;
-            padding: 12px 15px;
+            padding: 14px 15px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 0.85srem;
+            font-size: 0.9rem;
             font-weight: 600;
             text-align: left;
             cursor: pointer;
@@ -118,9 +118,11 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            pointer-events: auto;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .theme-option-btn:hover, .theme-option-btn.active {
+        .theme-option-btn:active, .theme-option-btn.active {
             background: var(--primary-color);
             color: #000;
             border-color: #fff;
@@ -237,7 +239,7 @@
             width: 100%;
             height: 100%;
             background: #000;
-            z-index: 1000;
+            z-index: 25000;
             justify-content: center;
             align-items: center;
         }
@@ -303,7 +305,7 @@
 <body>
 
     <!-- TOP LEFT MENU BUTTON -->
-    <div class="menu-btn" onclick="toggleMenu()">
+    <div class="menu-btn" ontouchstart="toggleMenu(event)" onclick="toggleMenu(event)">
         <span></span>
         <span></span>
         <span></span>
@@ -313,10 +315,10 @@
     <div class="menu-drawer" id="menuDrawer">
         <div class="menu-title">Select Vibe</div>
         <div class="theme-buttons-container">
-            <button class="theme-option-btn active" id="btn-fire" onclick="setTheme('fire')">🔥 Red Fire</button>
-            <button class="theme-option-btn" id="btn-petals" onclick="setTheme('petals')">🌹 Rose Petals</button>
-            <button class="theme-option-btn" id="btn-snow" onclick="setTheme('snow')">❄️ Snow Ice</button>
-            <button class="theme-option-btn" id="btn-crystal" onclick="setTheme('crystal')">💎 Crystal Ice</button>
+            <button class="theme-option-btn active" id="btn-fire" ontouchstart="setTheme('fire'); event.stopPropagation();" onclick="setTheme('fire')">🔥 Red Fire</button>
+            <button class="theme-option-btn" id="btn-petals" ontouchstart="setTheme('petals'); event.stopPropagation();" onclick="setTheme('petals')">🌹 Rose Petals</button>
+            <button class="theme-option-btn" id="btn-snow" ontouchstart="setTheme('snow'); event.stopPropagation();" onclick="setTheme('snow')">❄️ Snow Ice</button>
+            <button class="theme-option-btn" id="btn-crystal" ontouchstart="setTheme('crystal'); event.stopPropagation();" onclick="setTheme('crystal')">💎 Crystal Ice</button>
         </div>
     </div>
 
@@ -364,10 +366,20 @@
 
     <script>
         /* --- MENU DRAWER TOGGLE --- */
-        function toggleMenu() {
+        function toggleMenu(event) {
+            event.stopPropagation();
             const drawer = document.getElementById('menuDrawer');
             drawer.classList.toggle('open');
         }
+
+        // Close drawer if clicking outside
+        window.addEventListener('click', function(e) {
+            const drawer = document.getElementById('menuDrawer');
+            const menuBtn = document.querySelector('.menu-btn');
+            if (!drawer.contains(e.target) && !menuBtn.contains(e.target)) {
+                drawer.classList.remove('open');
+            }
+        });
 
         /* --- 4-WAY THEME SWITCHER LOGIC --- */
         let currentMode = 'fire'; // Default
@@ -468,7 +480,6 @@
                         this.reset();
                     }
                 } else {
-                    // Falling items loop back to top
                     if (this.y > canvas.height) {
                         this.y = -10;
                         this.x = Math.random() * canvas.width;
@@ -483,7 +494,6 @@
                 ctx.rotate(this.angle);
 
                 if (currentMode === 'crystal') {
-                    // Draw diamond crystal shape ❄️💎
                     ctx.beginPath();
                     ctx.moveTo(0, -this.size * 1.5);
                     ctx.lineTo(this.size, 0);
@@ -495,7 +505,6 @@
                     ctx.shadowBlur = 10;
                     ctx.fill();
                 } else if (currentMode === 'petals') {
-                    // Draw oval petal shape 🌹
                     ctx.beginPath();
                     ctx.ellipse(0, 0, this.size, this.size * 1.8, 0, 0, Math.PI * 2);
                     ctx.fillStyle = this.color;
@@ -503,7 +512,6 @@
                     ctx.shadowBlur = 8;
                     ctx.fill();
                 } else {
-                    // Standard glowing round particle for Fire & Snow
                     ctx.beginPath();
                     ctx.arc(0, 0, this.size, 0, Math.PI * 2);
                     ctx.fillStyle = this.color;
@@ -545,27 +553,12 @@
         const audioBtn = document.getElementById('audioBtn');
 
         function startExperience() {
+            document.getElementById('menuDrawer').classList.remove('open');
+            document.querySelector('.menu-btn').style.display = 'none';
             introOverlay.style.display = 'none';
             introVideoContainer.style.display = 'flex';
 
             introSongAudio.currentTime = 0;
             introVideo.currentTime = 0;
 
-            let playPromiseAudio = introSongAudio.play();
-            let playPromiseVideo = introVideo.play();
-
-            if (playPromiseAudio !== undefined) {
-                playPromiseAudio.catch(error => console.log("Audio play error:", error));
-            }
-
-            if (playPromiseVideo !== undefined) {
-                playPromiseVideo.catch(error => console.log("Video play error:", error));
-            }
-
-            introVideo.onended = function() {
-                introSongAudio.pause();
-                introVideoContainer.style.display = 'none';
-                mainContent.style.display = 'block';
-                
-                phonkAudio.play().catch(e => console.log("Phonk auto-play blocked", e));
-       
+            let playPromis
