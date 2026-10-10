@@ -1,564 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CLASSIFIED</title>
-    <!-- Import Cyberpunk Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --primary-color: #ff1a1a;
-            --primary-glow: rgba(255, 0, 0, 0.8);
-            --border-color: rgba(255, 0, 0, 0.7);
-            --bg-gradient: linear-gradient(135deg, #ff0000, #990000);
-            --box-bg: rgba(10, 10, 10, 0.85);
-            --shadow-color: rgba(255, 0, 0, 0.45);
-        }
-
-        body {
-            background-color: #0b0b0b;
-            color: #ffffff;
-            font-family: 'Share Tech Mono', monospace;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            overflow: hidden;
-        }
-
-        /* --- TOP LEFT MENU BUTTON --- */
-        .menu-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(15, 15, 15, 0.95);
-            border: 2px solid var(--primary-color);
-            color: #fff;
-            width: 48px;
-            height: 48px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            cursor: pointer;
-            z-index: 20000;
-            box-shadow: 0 0 15px var(--shadow-color);
-            transition: 0.3s ease;
-        }
-
-        .menu-btn span {
-            display: block;
-            width: 24px;
-            height: 3px;
-            background-color: var(--primary-color);
-            border-radius: 2px;
-            transition: 0.3s ease;
-        }
-
-        /* Settings Drawer Menu */
-        .menu-drawer {
-            position: fixed;
-            top: 0;
-            left: -290px;
-            width: 270px;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.98);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-right: 2px solid var(--primary-color);
-            z-index: 19999;
-            transition: left 0.4s ease;
-            padding: 85px 20px 20px 20px;
-            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.9);
-        }
-
-        .menu-drawer.open {
-            left: 0;
-        }
-
-        .menu-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px var(--primary-glow);
-        }
-
-        /* 4 Theme Selection Buttons in Drawer */
-        .theme-buttons-container {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .theme-option-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ccc;
-            padding: 14px 15px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-align: left;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            pointer-events: auto;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .theme-option-btn:active, .theme-option-btn.active {
-            background: var(--primary-color);
-            color: #000;
-            border-color: #fff;
-            box-shadow: 0 0 15px var(--primary-glow);
-        }
-
-        /* --- INTRO SCREEN OVERLAY --- */
-        #intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000 url('back ground.png') no-repeat center center;
-            background-size: cover;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            padding: 20px;
-        }
-
-        /* PARTICLES CANVAS */
-        #particleCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            mix-blend-mode: screen;
-        }
-
-        /* Styled Glassmorphism Card Box */
-        .intro-box {
-            position: relative;
-            z-index: 2;
-            background: var(--box-bg);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 2px solid var(--border-color);
-            border-radius: 16px;
-            padding: 40px 25px;
-            text-align: center;
-            max-width: 90%;
-            width: 380px;
-            box-shadow: 0 0 35px var(--shadow-color), inset 0 0 20px rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
-        }
-
-        .intro-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: var(--primary-color);
-            margin-bottom: 12px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px var(--primary-glow), 0 0 30px var(--primary-glow);
-            line-height: 1.2;
-            transition: color 0.4s ease;
-        }
-
-        .hint-text {
-            font-size: 1.2rem;
-            color: #dddddd;
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-            text-transform: lowercase;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
-        }
-
-        /* Large Pulsing Cyber Button */
-        .unlock-btn {
-            background: var(--bg-gradient);
-            border: 2px solid var(--primary-color);
-            color: #ffffff;
-            padding: 18px 36px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            cursor: pointer;
-            border-radius: 10px;
-            text-transform: uppercase;
-            width: 100%;
-            box-shadow: 0 0 20px var(--shadow-color);
-            transition: all 0.3s ease-in-out;
-            animation: pulse-glow 2s infinite alternate;
-        }
-
-        .unlock-btn:active, .unlock-btn:hover {
-            transform: scale(1.04);
-            box-shadow: 0 0 35px var(--primary-glow);
-        }
-
-        @keyframes pulse-glow {
-            0% {
-                box-shadow: 0 0 15px var(--shadow-color);
-            }
-            100% {
-                box-shadow: 0 0 35px var(--primary-glow);
-            }
-        }
-
-        /* --- INTRO VIDEO CONTAINER --- */
-        #intro-video-container {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #000;
-            z-index: 25000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #intro-video-container video {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        /* --- MAIN WEBSITE CONTENT --- */
-        #main-content {
-            display: none;
-            text-align: center;
-            padding: 20px;
-            max-width: 600px;
-            width: 100%;
-            position: relative;
-            z-index: 2;
-        }
-
-        h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            color: var(--primary-color);
-            text-transform: uppercase;
-            text-shadow: 0 0 15px var(--primary-glow);
-            transition: color 0.4s ease;
-        }
-
-        .audio-control {
-            background: #1a1a1a;
-            border: 2px solid var(--primary-color);
-            color: #fff;
-            padding: 16px 32px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            cursor: pointer;
-            border-radius: 8px;
-            transition: 0.3s ease;
-            box-shadow: 0 0 15px var(--shadow-color);
-        }
-
-        .audio-control:hover {
-            background: var(--primary-color);
-            color: #000;
-        }
-
-        .easter-egg {
-            margin-top: 50px;
-            font-size: 0.7rem;
-            color: #1a1a1a;
-            transition: color 0.3s;
-        }
-
-        .easter-egg:hover {
-            color: #666;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b0b0b">
+  <title>CLASSIFIED — WHO IS MONTAGEM</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary-color: #ff1a1a;
+      --primary-glow: rgba(255, 0, 0, .8);
+      --border-color: rgba(255, 0, 0, .7);
+      --bg-gradient: linear-gradient(135deg, #ff0000, #990000);
+      --box-bg: rgba(10, 10, 10, .85);
+      --shadow-color: rgba(255, 0, 0, .45);
+    }
+    html { min-height: 100%; background: #0b0b0b; }
+    body {
+      min-height: 100vh; min-height: 100dvh; background: #0b0b0b; color: #fff;
+      font-family: "Share Tech Mono", monospace; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; overflow: hidden;
+    }
+    button { -webkit-tap-highlight-color: transparent; }
+    .menu-btn {
+      position: fixed; top: 16px; left: 16px; background: rgba(15,15,15,.96);
+      border: 2px solid var(--primary-color); color: #fff; width: 48px; height: 48px;
+      border-radius: 10px; display: flex; flex-direction: column; justify-content: center;
+      align-items: center; gap: 5px; cursor: pointer; z-index: 100002;
+      box-shadow: 0 0 15px var(--shadow-color);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .menu-btn span { width: 24px; height: 3px; display: block; background: var(--primary-color); border-radius: 2px; transition: background .3s; }
+    .menu-drawer {
+      position: fixed; inset: 0 auto 0 0; width: min(280px, 84vw); height: 100%; height: 100dvh;
+      transform: translateX(-105%); background: rgba(10,10,10,.98);
+      -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      border-right: 2px solid var(--primary-color); z-index: 100001;
+      transition: transform .28s ease, border-color .3s; padding: 82px 18px 20px;
+      box-shadow: 10px 0 30px rgba(0,0,0,.75);
+    }
+    .menu-drawer.open { transform: translateX(0); }
+    .menu-title { font-family: Orbitron, sans-serif; font-size: 1.05rem; color: var(--primary-color); margin-bottom: 20px; letter-spacing: 1px; text-shadow: 0 0 10px var(--primary-glow); }
+    .theme-buttons-container { display: flex; flex-direction: column; gap: 12px; }
+    .theme-option-btn {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.18); color: #ddd;
+      padding: 14px 12px; font: 600 .84rem Orbitron, sans-serif; text-align: left; cursor: pointer;
+      border-radius: 8px; display: flex; align-items: center; gap: 10px; width: 100%;
+      transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
+    }
+    .theme-option-btn.active { background: var(--primary-color); color: #050505; border-color: #fff; box-shadow: 0 0 15px var(--primary-glow); }
+    #intro-overlay {
+      position: fixed; inset: 0; background: #000 url("back ground.png") no-repeat center center;
+      background-size: cover; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; z-index: 1000; padding: 20px; isolation: isolate;
+    }
+    #intro-overlay::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,.42); z-index: -1; }
+    #particleCanvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+    .intro-box {
+      position: relative; z-index: 2; background: var(--box-bg); -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px); border: 2px solid var(--border-color); border-radius: 16px;
+      padding: 36px 24px; text-align: center; width: min(380px, 94vw);
+      box-shadow: 0 0 35px var(--shadow-color), inset 0 0 20px rgba(255,255,255,.05);
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .intro-title { font: 900 clamp(1.55rem, 7vw, 2.2rem)/1.2 Orbitron, sans-serif; letter-spacing: 1px; color: var(--primary-color); margin-bottom: 12px; text-transform: uppercase; text-shadow: 0 0 15px var(--primary-glow), 0 0 30px var(--primary-glow); }
+    .hint-text { font-size: 1.05rem; color: #ddd; margin-bottom: 28px; letter-spacing: 2px; text-transform: lowercase; text-shadow: 0 0 5px rgba(255,255,255,.5); }
+    .unlock-btn { background: var(--bg-gradient); border: 2px solid var(--primary-color); color: #fff; padding: 16px 20px; font: 700 1.05rem Orbitron, sans-serif; letter-spacing: 1.5px; cursor: pointer; border-radius: 10px; width: 100%; box-shadow: 0 0 20px var(--shadow-color); animation: pulse-glow 2s infinite alternate; }
+    .skip-btn { margin-top: 14px; background: transparent; border: 1px solid rgba(255,255,255,.25); color: #ddd; padding: 9px 14px; border-radius: 7px; font: .8rem "Share Tech Mono", monospace; cursor: pointer; }
+    @keyframes pulse-glow { from { box-shadow: 0 0 15px var(--shadow-color); } to { box-shadow: 0 0 35px var(--primary-glow); } }
+    #intro-video-container { display: none; position: fixed; inset: 0; background: #000; z-index: 100000; justify-content: center; align-items: center; }
+    #introVideo { width: 100%; height: 100%; object-fit: contain; background: #000; }
+    .video-skip { position: absolute; right: 16px; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 2; padding: 11px 15px; background: rgba(0,0,0,.75); border: 1px solid var(--primary-color); color: white; border-radius: 8px; font: 700 .8rem Orbitron, sans-serif; cursor: pointer; }
+    #main-content { display: none; text-align: center; padding: 24px 20px; width: 100%; max-width: 640px; position: relative; z-index: 2; }
+    h1 { font: 700 clamp(1.5rem, 6vw, 2rem) Orbitron, sans-serif; letter-spacing: 1px; margin-bottom: 25px; color: var(--primary-color); text-transform: uppercase; text-shadow: 0 0 15px var(--primary-glow); }
+    .audio-control { background: #1a1a1a; border: 2px solid var(--primary-color); color: #fff; padding: 15px 22px; font: 600 1rem Orbitron, sans-serif; cursor: pointer; border-radius: 8px; box-shadow: 0 0 15px var(--shadow-color); }
+    .audio-control:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+    .status-text { margin-top: 16px; color: #aaa; font-size: .85rem; min-height: 1.2em; }
+    .easter-egg { margin-top: 46px; font-size: .75rem; line-height: 1.6; color: #777; }
+    @media (max-width: 420px) { .intro-box { padding: 30px 18px; } .hint-text { font-size: .95rem; } }
+  </style>
 </head>
 <body>
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open theme menu" aria-controls="menuDrawer" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
 
-    <!-- TOP LEFT MENU BUTTON -->
-    <div class="menu-btn" ontouchstart="toggleMenu(event)" onclick="toggleMenu(event)">
-        <span></span>
-        <span></span>
-        <span></span>
+  <aside class="menu-drawer" id="menuDrawer" aria-label="Theme selection">
+    <div class="menu-title">Select Vibe</div>
+    <div class="theme-buttons-container">
+      <button class="theme-option-btn active" id="btn-fire" data-theme="fire" type="button" aria-pressed="true">🔥 Red Fire</button>
+      <button class="theme-option-btn" id="btn-petals" data-theme="petals" type="button" aria-pressed="false">🌹 Rose Petals</button>
+      <button class="theme-option-btn" id="btn-snow" data-theme="snow" type="button" aria-pressed="false">❄️ Snow Ice</button>
+      <button class="theme-option-btn" id="btn-crystal" data-theme="crystal" type="button" aria-pressed="false">💎 Crystal Ice</button>
     </div>
+  </aside>
 
-    <!-- SETTINGS DRAWER WITH 4 THEME BUTTONS -->
-    <div class="menu-drawer" id="menuDrawer">
-        <div class="menu-title">Select Vibe</div>
-        <div class="theme-buttons-container">
-            <button class="theme-option-btn active" id="btn-fire" ontouchstart="setTheme('fire'); event.stopPropagation();" onclick="setTheme('fire')">🔥 Red Fire</button>
-            <button class="theme-option-btn" id="btn-petals" ontouchstart="setTheme('petals'); event.stopPropagation();" onclick="setTheme('petals')">🌹 Rose Petals</button>
-            <button class="theme-option-btn" id="btn-snow" ontouchstart="setTheme('snow'); event.stopPropagation();" onclick="setTheme('snow')">❄️ Snow Ice</button>
-            <button class="theme-option-btn" id="btn-crystal" ontouchstart="setTheme('crystal'); event.stopPropagation();" onclick="setTheme('crystal')">💎 Crystal Ice</button>
-        </div>
+  <section id="intro-overlay" aria-label="Welcome screen">
+    <canvas id="particleCanvas" aria-hidden="true"></canvas>
+    <div class="intro-box">
+      <div class="intro-title">WHO IS MONTAGEM</div>
+      <div class="hint-text">you can't find me</div>
+      <button class="unlock-btn" id="enterBtn" type="button">Tap to Enter</button>
+      <div><button class="skip-btn" id="skipIntroBtn" type="button">Skip intro video</button></div>
     </div>
+  </section>
 
-    <!-- INTRO OVERLAY SCREEN -->
-    <div id="intro-overlay">
-        <!-- CANVAS FOR DYNAMIC PARTICLES -->
-        <canvas id="particleCanvas"></canvas>
+  <section id="intro-video-container" aria-label="Intro video">
+    <video id="introVideo" playsinline preload="metadata">
+      <source src="Intro.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <button class="video-skip" id="videoSkipBtn" type="button">Skip video ↗</button>
+  </section>
 
-        <div class="intro-box">
-            <div class="intro-title">WHO IS MONTAGEM</div>
-            <div class="hint-text">you can't find me</div>
-            <button class="unlock-btn" onclick="startExperience()">Tap to Enter</button>
-        </div>
-    </div>
+  <audio id="introSongAudio" preload="metadata">
+    <source src="Intro song.mp3" type="audio/mpeg">
+  </audio>
 
-    <!-- INTRO VIDEO CONTAINER -->
-    <div id="intro-video-container">
-        <video id="introVideo" playsinline preload="auto">
-            <source src="Intro.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <!-- INTRO SONG AUDIO -->
-    <audio id="introSongAudio" preload="auto">
-        <source src="Intro song.mp3" type="audio/mpeg">
+  <main id="main-content">
+    <h1>Find True Identity</h1>
+    <audio id="phonkAudio" loop preload="metadata">
+      <source src="your-phonk-track.mp3" type="audio/mpeg">
     </audio>
+    <button class="audio-control" id="audioBtn" type="button">▶ Play Phonk</button>
+    <p class="status-text" id="audioStatus" role="status" aria-live="polite"></p>
+    <div class="easter-egg">If you're reading this, you aren't a stranger. You already know who built this.</div>
+  </main>
 
-    <!-- MAIN WEBSITE CONTENT -->
-    <div id="main-content">
-        <h1>Find True Identity</h1>
-        
-        <!-- Background Phonk Music -->
-        <audio id="phonkAudio" loop>
-            <source src="your-phonk-track.mp3" type="audio/mpeg">
-        </audio>
+  <script>
+    "use strict";
 
-        <button class="audio-control" id="audioBtn" onclick="togglePhonk()">▶ Play Phonk</button>
+    const root = document.documentElement;
+    const menuBtn = document.getElementById("menuBtn");
+    const menuDrawer = document.getElementById("menuDrawer");
+    const introOverlay = document.getElementById("intro-overlay");
+    const introVideoContainer = document.getElementById("intro-video-container");
+    const introVideo = document.getElementById("introVideo");
+    const introSongAudio = document.getElementById("introSongAudio");
+    const mainContent = document.getElementById("main-content");
+    const phonkAudio = document.getElementById("phonkAudio");
+    const audioBtn = document.getElementById("audioBtn");
+    const audioStatus = document.getElementById("audioStatus");
+    const canvas = document.getElementById("particleCanvas");
+    const ctx = canvas.getContext("2d");
 
-        <!-- Secret Hint for Closest Friends -->
-        <div class="easter-egg">
-            If you're reading this, you aren't a stranger. You already know who built this.
-        </div>
-    </div>
+    const themes = {
+      fire: {
+        primary: "#ff1a1a", glow: "rgba(255,0,0,.8)", border: "rgba(255,0,0,.7)",
+        gradient: "linear-gradient(135deg,#ff0000,#990000)", shadow: "rgba(255,0,0,.45)"
+      },
+      petals: {
+        primary: "#ff3366", glow: "rgba(255,51,102,.8)", border: "rgba(255,51,102,.7)",
+        gradient: "linear-gradient(135deg,#ff3366,#990033)", shadow: "rgba(255,51,102,.45)"
+      },
+      snow: {
+        primary: "#00bfff", glow: "rgba(0,191,255,.8)", border: "rgba(0,191,255,.7)",
+        gradient: "linear-gradient(135deg,#00bfff,#0044cc)", shadow: "rgba(0,191,255,.45)"
+      },
+      crystal: {
+        primary: "#00ffff", glow: "rgba(0,255,255,.85)", border: "rgba(0,255,255,.8)",
+        gradient: "linear-gradient(135deg,#00ffff,#0088aa)", shadow: "rgba(0,255,255,.5)"
+      }
+    };
 
-    <script>
-        /* --- MENU DRAWER TOGGLE --- */
-        function toggleMenu(event) {
-            event.stopPropagation();
-            const drawer = document.getElementById('menuDrawer');
-            drawer.classList.toggle('open');
+    let currentMode = "fire";
+    let particles = [];
+    const particleCount = 65;
+    let animationFrame = 0;
+    let experienceStarted = false;
+
+    function toggleMenu(forceOpen) {
+      const shouldOpen = typeof forceOpen === "boolean" ? forceOpen : !menuDrawer.classList.contains("open");
+      menuDrawer.classList.toggle("open", shouldOpen);
+      menuBtn.setAttribute("aria-expanded", String(shouldOpen));
+      menuBtn.setAttribute("aria-label", shouldOpen ? "Close theme menu" : "Open theme menu");
+    }
+    menuBtn.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleMenu();
+    });
+    document.addEventListener("click", (event) => {
+      if (!menuDrawer.contains(event.target) && !menuBtn.contains(event.target)) toggleMenu(false);
+    });
+
+    function setTheme(mode) {
+      if (!themes[mode]) return;
+      currentMode = mode;
+      const theme = themes[mode];
+      root.style.setProperty("--primary-color", theme.primary);
+      root.style.setProperty("--primary-glow", theme.glow);
+      root.style.setProperty("--border-color", theme.border);
+      root.style.setProperty("--bg-gradient", theme.gradient);
+      root.style.setProperty("--shadow-color", theme.shadow);
+
+      document.querySelectorAll(".theme-option-btn").forEach((button) => {
+        const active = button.dataset.theme === mode;
+        button.classList.toggle("active", active);
+        button.setAttribute("aria-pressed", String(active));
+      });
+      initParticles();
+      toggleMenu(false);
+    }
+    document.querySelectorAll(".theme-option-btn").forEach((button) => {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        setTheme(button.dataset.theme);
+      });
+      button.addEventListener("touchstart", (e) => {
+        e.stopPropagation();
+        setTheme(button.dataset.theme);
+      }, { passive: true });
+    });
+
+    function resizeCanvas() {
+      const ratio = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = Math.floor(window.innerWidth * ratio);
+      canvas.height = Math.floor(window.innerHeight * ratio);
+      canvas.style.width = window.innerWidth + "px";
+      canvas.style.height = window.innerHeight + "px";
+      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      initParticles();
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    class Particle {
+      constructor() { this.reset(true); }
+      reset(randomY = false) {
+        this.x = Math.random() * window.innerWidth;
+        this.y = randomY ? Math.random() * window.innerHeight : -12;
+        this.size = Math.random() * 3 + 1.5;
+        this.opacity = Math.random() * .55 + .3;
+        this.angle = Math.random() * Math.PI * 2;
+        this.spin = (Math.random() - .5) * .05;
+        if (currentMode === "fire") {
+          this.speedX = (Math.random() - .5) * 1.7;
+          this.speedY = (Math.random() - .5) * 1.7;
+          this.color = ["#ff0000", "#ff3300", "#ff6600", "#e60000"][Math.floor(Math.random() * 4)];
+        } else if (currentMode === "petals") {
+          this.speedX = (Math.random() - .5) * 1.1;
+          this.speedY = Math.random() * 1.2 + .55;
+          this.color = Math.random() > .5 ? "#ff3366" : "#ff7895";
+        } else if (currentMode === "snow") {
+          this.speedX = (Math.random() - .5) * .8;
+          this.speedY = Math.random() * 1.2 + .4;
+          this.color = "#ffffff";
+        } else {
+          this.speedX = (Math.random() - .5) * 1;
+          this.speedY = Math.random() * 1.5 + .6;
+          this.color = "#00ffff";
         }
-
-        // Close drawer if clicking outside
-        window.addEventListener('click', function(e) {
-            const drawer = document.getElementById('menuDrawer');
-            const menuBtn = document.querySelector('.menu-btn');
-            if (!drawer.contains(e.target) && !menuBtn.contains(e.target)) {
-                drawer.classList.remove('open');
-            }
-        });
-
-        /* --- 4-WAY THEME SWITCHER LOGIC --- */
-        let currentMode = 'fire'; // Default
-
-        function setTheme(mode) {
-            currentMode = mode;
-            const root = document.documentElement;
-
-            // Update active states on buttons
-            document.querySelectorAll('.theme-option-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btn-' + mode).classList.add('active');
-
-            if (mode === 'fire') {
-                root.style.setProperty('--primary-color', '#ff1a1a');
-                root.style.setProperty('--primary-glow', 'rgba(255, 0, 0, 0.8)');
-                root.style.setProperty('--border-color', 'rgba(255, 0, 0, 0.7)');
-                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #ff0000, #990000)');
-                root.style.setProperty('--shadow-color', 'rgba(255, 0, 0, 0.45)');
-            } else if (mode === 'petals') {
-                root.style.setProperty('--primary-color', '#ff3366');
-                root.style.setProperty('--primary-glow', 'rgba(255, 51, 102, 0.8)');
-                root.style.setProperty('--border-color', 'rgba(255, 51, 102, 0.7)');
-                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #ff3366, #990033)');
-                root.style.setProperty('--shadow-color', 'rgba(255, 51, 102, 0.45)');
-            } else if (mode === 'snow') {
-                root.style.setProperty('--primary-color', '#00bfff');
-                root.style.setProperty('--primary-glow', 'rgba(0, 191, 255, 0.8)');
-                root.style.setProperty('--border-color', 'rgba(0, 191, 255, 0.7)');
-                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #00bfff, #0044cc)');
-                root.style.setProperty('--shadow-color', 'rgba(0, 191, 255, 0.45)');
-            } else if (mode === 'crystal') {
-                root.style.setProperty('--primary-color', '#00ffff');
-                root.style.setProperty('--primary-glow', 'rgba(0, 255, 255, 0.85)');
-                root.style.setProperty('--border-color', 'rgba(0, 255, 255, 0.8)');
-                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #00ffff, #0088aa)');
-                root.style.setProperty('--shadow-color', 'rgba(0, 255, 255, 0.5)');
-            }
-
-            // Instantly re-initialize particles for the selected mode
-            initParticles();
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.angle += this.spin;
+        if (currentMode === "fire") {
+          this.opacity -= .0015;
+          if (this.opacity <= .05 || this.x < -10 || this.x > window.innerWidth + 10 ||
+              this.y < -10 || this.y > window.innerHeight + 10) this.reset(true);
+        } else {
+          if (this.y > window.innerHeight + 12) this.reset(false);
+          if (this.x < -12) this.x = window.innerWidth + 12;
+          if (this.x > window.innerWidth + 12) this.x = -12;
         }
-
-        /* --- ADVANCED MULTI-MODE PARTICLE ENGINE --- */
-        const canvas = document.getElementById('particleCanvas');
-        const ctx = canvas.getContext('2d');
-
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+      }
+      draw() {
+        ctx.save();
+        ctx.globalAlpha = this.opacity;
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = currentMode === "snow" ? 5 : 9;
+        ctx.beginPath();
+        if (currentMode === "crystal") {
+          ctx.moveTo(0, -this.size * 1.5);
+          ctx.lineTo(this.size, 0);
+          ctx.lineTo(0, this.size * 1.5);
+          ctx.lineTo(-this.size, 0);
+          ctx.closePath();
+        } else if (currentMode === "petals") {
+          ctx.ellipse(0, 0, this.size * .75, this.size * 1.7, 0, 0, Math.PI * 2);
+        } else {
+          ctx.arc(0, 0, this.size, 0, Math.PI * 2);
         }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
+        ctx.fill();
+        ctx.restore();
+      }
+    }
 
-        let particles = [];
-        const particleCount = 65;
+    function initParticles() {
+      particles = Array.from({ length: particleCount }, () => new Particle());
+    }
+    function animateParticles() {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      for (const particle of particles) {
+        particle.update();
+        particle.draw();
+      }
+      animationFrame = window.requestAnimationFrame(animateParticles);
+    }
+    resizeCanvas();
+    animateParticles();
 
-        class Particle {
-            constructor() {
-                this.reset();
-            }
+    function stopIntroMedia() {
+      introSongAudio.pause();
+      introSongAudio.currentTime = 0;
+      introVideo.pause();
+    }
 
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 4 + 2;
-                this.opacity = Math.random() * 0.7 + 0.2;
-                this.angle = Math.random() * Math.PI * 2;
-                this.spin = (Math.random() - 0.5) * 0.05;
+    function showMainContent() {
+      stopIntroMedia();
+      introOverlay.style.display = "none";
+      introVideoContainer.style.display = "none";
+      mainContent.style.display = "block";
+      menuBtn.style.display = "flex";
+      experienceStarted = true;
+      phonkAudio.play().then(() => {
+        audioBtn.textContent = "⏸ Pause Phonk";
+        audioStatus.textContent = "";
+      }).catch(() => {
+        audioBtn.textContent = "▶ Play Phonk";
+        audioStatus.textContent = "Tap Play Phonk to start the music.";
+      });
+    }
 
-                if (currentMode === 'fire') {
-                    this.speedX = (Math.random() - 0.5) * 2;
-                    this.speedY = (Math.random() - 0.5) * 2;
-                    const colors = ['#ff0000', '#ff3300', '#ff6600', '#e60000'];
-                    this.color = colors[Math.floor(Math.random() * colors.length)];
-                } else if (currentMode === 'petals') {
-                    this.speedX = Math.sin(this.angle) * 1.5;
-                    this.speedY = Math.random() * 1.5 + 0.8;
-                    this.color = '#ff3366';
-                } else if (currentMode === 'snow') {
-                    this.speedX = (Math.random() - 0.5) * 1;
-                    this.speedY = Math.random() * 1.5 + 0.5;
-                    this.color = '#ffffff';
-                } else if (currentMode === 'crystal') {
-                    this.speedX = (Math.random() - 0.5) * 1.2;
-                    this.speedY = Math.random() * 2 + 1;
-                    this.color = '#00ffff';
-                }
-            }
+    async function startExperience() {
+      if (experienceStarted) return;
+      toggleMenu(false);
+      menuBtn.style.display = "none";
+      introOverlay.style.display = "none";
+      introVideoContainer.style.display = "flex";
+      introVideo.currentTime = 0;
+      introSongAudio.currentTime = 0;
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.angle += this.spin;
-
-                if (currentMode === 'fire') {
-                    this.opacity -= 0.002;
-                    if (this.opacity <= 0 || this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-                        this.reset();
-                    }
-                } else {
-                    if (this.y > canvas.height) {
-                        this.y = -10;
-                        this.x = Math.random() * canvas.width;
-                    }
-                }
-            }
-
-            draw() {
-                ctx.save();
-                ctx.globalAlpha = this.opacity;
-                ctx.translate(this.x, this.y);
-                ctx.rotate(this.angle);
-
-                if (currentMode === 'crystal') {
-                    ctx.beginPath();
-                    ctx.moveTo(0, -this.size * 1.5);
-                    ctx.lineTo(this.size, 0);
-                    ctx.lineTo(0, this.size * 1.5);
-                    ctx.lineTo(-this.size, 0);
-                    ctx.closePath();
-                    ctx.fillStyle = this.color;
-                    ctx.shadowColor = '#00ffff';
-                    ctx.shadowBlur = 10;
-                    ctx.fill();
-                } else if (currentMode === 'petals') {
-                    ctx.beginPath();
-                    ctx.ellipse(0, 0, this.size, this.size * 1.8, 0, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.shadowColor = '#ff3366';
-                    ctx.shadowBlur = 8;
-                    ctx.fill();
-                } else {
-                    ctx.beginPath();
-                    ctx.arc(0, 0, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.shadowColor = this.color;
-                    ctx.shadowBlur = 8;
-                    ctx.fill();
-                }
-
-                ctx.restore();
-            }
+      let videoStarted = false;
+      try {
+        await introVideo.play();
+        videoStarted = true;
+      } catch (error) {
+        console.warn("Intro video could not play:", error);
+      }
+      try {
+        await introSongAudio.play();
+      } catch (error) {
+        console.warn("Intro song could not play:", error);
+      }
+      if (!videoStarted) {
+        introVideoContainer.style.display = "flex";
+        const videoErrorFallback = () => showMainContent();
+        introVideo.addEventListener("error", videoErrorFallback, { once: true });
+        if (introVideo.readyState === 0 && introVideo.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
+          setTimeout(videoErrorFallback, 900);
         }
+      }
+    }
 
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
+    document.getElementById("enterBtn").addEventListener("click", startExperience);
+    document.getElementById("skipIntroBtn").addEventListener("click", showMainContent);
+    document.getElementById("videoSkipBtn").addEventListener("click", showMainContent);
+    introVideo.addEventListener("ended", showMainContent);
+    introVideo.addEventListener("error", () => {
+      if (introVideoContainer.style.display === "flex") showMainContent();
+    });
+
+    async function togglePhonk() {
+      if (phonkAudio.paused) {
+        try {
+          await phonkAudio.play();
+          audioBtn.textContent = "⏸ Pause Phonk";
+          audioStatus.textContent = "";
+        } catch (error) {
+          audioBtn.textContent = "▶ Play Phonk";
+          audioStatus.textContent = "Couldn't play music. Check the MP3 filename.";
         }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animateParticles);
-        }
-
-        initParticles();
-        animateParticles();
-
-        /* --- INTRO EXPERIENCE CONTROLLER --- */
-        const introOverlay = document.getElementById('intro-overlay');
-        const introVideoContainer = document.getElementById('intro-video-container');
-        const introVideo = document.getElementById('introVideo');
-        const introSongAudio = document.getElementById('introSongAudio');
-        const mainContent = document.getElementById('main-content');
-        const phonkAudio = document.getElementById('phonkAudio');
-        const audioBtn = document.getElementById('audioBtn');
-
-        function startExperience() {
-            document.getElementById('menuDrawer').classList.remove('open');
-            document.querySelector('.menu-btn').style.display = 'none';
-            introOverlay.style.display = 'none';
-            introVideoContainer.style.display = 'flex';
-
-            introSongAudio.currentTime = 0;
-            introVideo.currentTime = 0;
-
-            let playPromis
+      } else {
+        phonkAudio.pause();
+        audioBtn.textContent = "▶ Play Phonk";
+      }
+    }
+    audioBtn.addEventListener("click", togglePhonk);
+  </script>
+</body>
+</html>
