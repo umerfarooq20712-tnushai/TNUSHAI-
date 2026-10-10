@@ -52,6 +52,8 @@
       transition: background .2s, color .2s, border-color .2s, box-shadow .2s;
     }
     .theme-option-btn.active { background: var(--primary-color); color: #050505; border-color: #fff; box-shadow: 0 0 15px var(--primary-glow); }
+    
+    /* FIRST INTRO OVERLAY */
     #intro-overlay {
       position: fixed; inset: 0; background: #000 url("back ground.png") no-repeat center center;
       background-size: cover; display: flex; flex-direction: column; align-items: center;
@@ -70,15 +72,32 @@
     .hint-text { font-size: 1.05rem; color: #ddd; margin-bottom: 28px; letter-spacing: 2px; text-transform: lowercase; text-shadow: 0 0 5px rgba(255,255,255,.5); }
     .unlock-btn { background: var(--bg-gradient); border: 2px solid var(--primary-color); color: #fff; padding: 16px 20px; font: 700 1.05rem Orbitron, sans-serif; letter-spacing: 1.5px; cursor: pointer; border-radius: 10px; width: 100%; box-shadow: 0 0 20px var(--shadow-color); animation: pulse-glow 2s infinite alternate; }
     @keyframes pulse-glow { from { box-shadow: 0 0 15px var(--shadow-color); } to { box-shadow: 0 0 35px var(--primary-glow); } }
-    #intro-video-container { display: none; position: fixed; inset: 0; background: #000; z-index: 100000; justify-content: center; align-items: center; }
-    #introVideo { width: 100%; height: 100%; object-fit: contain; background: #000; }
-    .video-skip { position: absolute; right: 16px; bottom: max(18px, env(safe-area-inset-bottom)); z-index: 2; padding: 11px 15px; background: rgba(0,0,0,.75); border: 1px solid var(--primary-color); color: white; border-radius: 8px; font: 700 .8rem Orbitron, sans-serif; cursor: pointer; }
-    #main-content { display: none; text-align: center; padding: 24px 20px; width: 100%; max-width: 640px; position: relative; z-index: 2; }
-    h1 { font: 700 clamp(1.5rem, 6vw, 2rem) Orbitron, sans-serif; letter-spacing: 1px; margin-bottom: 25px; color: var(--primary-color); text-transform: uppercase; text-shadow: 0 0 15px var(--primary-glow); }
-    .audio-control { background: #1a1a1a; border: 2px solid var(--primary-color); color: #fff; padding: 15px 22px; font: 600 1rem Orbitron, sans-serif; cursor: pointer; border-radius: 8px; box-shadow: 0 0 15px var(--shadow-color); }
-    .audio-control:focus-visible, button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
-    .status-text { margin-top: 16px; color: #aaa; font-size: .85rem; min-height: 1.2em; }
-    @media (max-width: 420px) { .intro-box { padding: 30px 18px; } .hint-text { font-size: .95rem; } }
+
+    /* --- INNER DASHBOARD WITH INCOGNITO.JPG BACKGROUND --- */
+    #main-content {
+      display: none; position: fixed; inset: 0; background: #000 url("Incognito.jpg") no-repeat center center;
+      background-size: cover; text-align: center; padding: 24px 20px; width: 100%; height: 100%;
+      flex-direction: column; align-items: center; justify-content: center; z-index: 2;
+    }
+    #main-content::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: -1; }
+    
+    .dashboard-box {
+      background: var(--box-bg); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+      border: 2px solid var(--border-color); border-radius: 16px; padding: 40px 30px;
+      max-width: 420px; width: 90%; box-shadow: 0 0 35px var(--shadow-color);
+    }
+    
+    h1 { font: 700 clamp(1.4rem, 5vw, 1.8rem) Orbitron, sans-serif; letter-spacing: 1px; margin-bottom: 25px; color: var(--primary-color); text-transform: uppercase; text-shadow: 0 0 15px var(--primary-glow); }
+    
+    .start-animation-btn { background: var(--bg-gradient); border: 2px solid var(--primary-color); color: #fff; padding: 16px 28px; font: 700 1.1rem Orbitron, sans-serif; cursor: pointer; border-radius: 10px; width: 100%; box-shadow: 0 0 20px var(--shadow-color); transition: 0.3s; }
+    .start-animation-btn:hover { transform: scale(1.03); box-shadow: 0 0 30px var(--primary-glow); }
+
+    /* --- FUTURE ANIMATION VIDEO CONTAINER --- */
+    #animation-container { display: none; position: fixed; inset: 0; background: #000; z-index: 50000; justify-content: center; align-items: center; }
+    #actionVideo { width: 100%; height: 100%; object-fit: contain; background: #000; }
+    .video-skip { position: absolute; right: 20px; bottom: max(20px, env(safe-area-inset-bottom)); z-index: 2; padding: 10px 18px; background: rgba(0,0,0,0.8); border: 1px solid var(--primary-color); color: white; border-radius: 8px; font: 700 0.85rem Orbitron, sans-serif; cursor: pointer; }
+
+    @media (max-width: 420px) { .intro-box, .dashboard-box { padding: 30px 18px; } }
   </style>
 </head>
 <body>
@@ -96,6 +115,7 @@
     </div>
   </aside>
 
+  <!-- STEP 1: INITIAL INTRO SCREEN -->
   <section id="intro-overlay" aria-label="Welcome screen">
     <canvas id="particleCanvas" aria-hidden="true"></canvas>
     <div class="intro-box">
@@ -105,26 +125,32 @@
     </div>
   </section>
 
-  <section id="intro-video-container" aria-label="Intro video">
-    <video id="introVideo" playsinline preload="metadata">
-      <source src="Intro.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-    <button class="video-skip" id="videoSkipBtn" type="button">Skip video ↗</button>
-  </section>
-
-  <audio id="introSongAudio" preload="metadata">
+  <!-- BACKGROUND INTRO AUDIO -->
+  <audio id="introSongAudio" preload="auto">
     <source src="Intro song.mp3" type="audio/mpeg">
   </audio>
 
+  <!-- STEP 2: INNER DASHBOARD (Incognito.jpg background + Let's Start button) -->
   <main id="main-content">
-    <h1>Find True Identity</h1>
-    <audio id="phonkAudio" loop preload="metadata">
+    <div class="dashboard-box">
+      <h1>Command Center</h1>
+      <button class="start-animation-btn" id="startAnimBtn" type="button">▶ Let's Start</button>
+    </div>
+
+    <!-- Background Phonk Music -->
+    <audio id="phonkAudio" loop preload="auto">
       <source src="your-phonk-track.mp3" type="audio/mpeg">
     </audio>
-    <button class="audio-control" id="audioBtn" type="button">▶ Play Phonk</button>
-    <p class="status-text" id="audioStatus" role="status" aria-live="polite"></p>
   </main>
+
+  <!-- STEP 3: FUTURE ANIMATION VIDEO (Preloaded for instant playback) -->
+  <section id="animation-container" aria-label="Animation video">
+    <video id="actionVideo" playsinline preload="auto">
+      <source src="Future animation.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <button class="video-skip" id="videoSkipBtn" type="button">Skip ↗</button>
+  </section>
 
   <script>
     "use strict";
@@ -133,13 +159,11 @@
     const menuBtn = document.getElementById("menuBtn");
     const menuDrawer = document.getElementById("menuDrawer");
     const introOverlay = document.getElementById("intro-overlay");
-    const introVideoContainer = document.getElementById("intro-video-container");
-    const introVideo = document.getElementById("introVideo");
     const introSongAudio = document.getElementById("introSongAudio");
     const mainContent = document.getElementById("main-content");
     const phonkAudio = document.getElementById("phonkAudio");
-    const audioBtn = document.getElementById("audioBtn");
-    const audioStatus = document.getElementById("audioStatus");
+    const animationContainer = document.getElementById("animation-container");
+    const actionVideo = document.getElementById("actionVideo");
     const canvas = document.getElementById("particleCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -165,19 +189,13 @@
     let currentMode = "fire";
     let particles = [];
     const particleCount = 65;
-    let animationFrame = 0;
-    let experienceStarted = false;
 
     function toggleMenu(forceOpen) {
       const shouldOpen = typeof forceOpen === "boolean" ? forceOpen : !menuDrawer.classList.contains("open");
       menuDrawer.classList.toggle("open", shouldOpen);
       menuBtn.setAttribute("aria-expanded", String(shouldOpen));
-      menuBtn.setAttribute("aria-label", shouldOpen ? "Close theme menu" : "Open theme menu");
     }
-    menuBtn.addEventListener("click", (event) => {
-      event.stopPropagation();
-      toggleMenu();
-    });
+    menuBtn.addEventListener("click", (event) => { event.stopPropagation(); toggleMenu(); });
     document.addEventListener("click", (event) => {
       if (!menuDrawer.contains(event.target) && !menuBtn.contains(event.target)) toggleMenu(false);
     });
@@ -193,31 +211,18 @@
       root.style.setProperty("--shadow-color", theme.shadow);
 
       document.querySelectorAll(".theme-option-btn").forEach((button) => {
-        const active = button.dataset.theme === mode;
-        button.classList.toggle("active", active);
-        button.setAttribute("aria-pressed", String(active));
+        button.classList.toggle("active", button.dataset.theme === mode);
       });
       initParticles();
       toggleMenu(false);
     }
     document.querySelectorAll(".theme-option-btn").forEach((button) => {
-      button.addEventListener("click", (e) => {
-        e.stopPropagation();
-        setTheme(button.dataset.theme);
-      });
-      button.addEventListener("touchstart", (e) => {
-        e.stopPropagation();
-        setTheme(button.dataset.theme);
-      }, { passive: true });
+      button.addEventListener("click", (e) => { e.stopPropagation(); setTheme(button.dataset.theme); });
     });
 
     function resizeCanvas() {
-      const ratio = Math.min(window.devicePixelRatio || 1, 2);
-      canvas.width = Math.floor(window.innerWidth * ratio);
-      canvas.height = Math.floor(window.innerHeight * ratio);
-      canvas.style.width = window.innerWidth + "px";
-      canvas.style.height = window.innerHeight + "px";
-      ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
       initParticles();
     }
     window.addEventListener("resize", resizeCanvas);
@@ -255,12 +260,9 @@
         this.angle += this.spin;
         if (currentMode === "fire") {
           this.opacity -= .0015;
-          if (this.opacity <= .05 || this.x < -10 || this.x > window.innerWidth + 10 ||
-              this.y < -10 || this.y > window.innerHeight + 10) this.reset(true);
+          if (this.opacity <= .05 || this.x < -10 || this.x > window.innerWidth + 10) this.reset(true);
         } else {
           if (this.y > window.innerHeight + 12) this.reset(false);
-          if (this.x < -12) this.x = window.innerWidth + 12;
-          if (this.x > window.innerWidth + 12) this.x = -12;
         }
       }
       draw() {
@@ -270,14 +272,10 @@
         ctx.rotate(this.angle);
         ctx.fillStyle = this.color;
         ctx.shadowColor = this.color;
-        ctx.shadowBlur = currentMode === "snow" ? 5 : 9;
+        ctx.shadowBlur = 9;
         ctx.beginPath();
         if (currentMode === "crystal") {
-          ctx.moveTo(0, -this.size * 1.5);
-          ctx.lineTo(this.size, 0);
-          ctx.lineTo(0, this.size * 1.5);
-          ctx.lineTo(-this.size, 0);
-          ctx.closePath();
+          ctx.moveTo(0, -this.size * 1.5); ctx.lineTo(this.size, 0); ctx.lineTo(0, this.size * 1.5); ctx.lineTo(-this.size, 0); ctx.closePath();
         } else if (currentMode === "petals") {
           ctx.ellipse(0, 0, this.size * .75, this.size * 1.7, 0, 0, Math.PI * 2);
         } else {
@@ -293,92 +291,35 @@
     }
     function animateParticles() {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-      for (const particle of particles) {
-        particle.update();
-        particle.draw();
-      }
-      animationFrame = window.requestAnimationFrame(animateParticles);
+      particles.forEach(p => { p.update(); p.draw(); });
+      requestAnimationFrame(animateParticles);
     }
     resizeCanvas();
     animateParticles();
 
-    function stopIntroMedia() {
-      introSongAudio.pause();
-      introSongAudio.currentTime = 0;
-      introVideo.pause();
-    }
-
-    function showMainContent() {
-      stopIntroMedia();
+    // 1. Enter site from first intro overlay
+    document.getElementById("enterBtn").addEventListener("click", () => {
       introOverlay.style.display = "none";
-      introVideoContainer.style.display = "none";
-      mainContent.style.display = "block";
-      menuBtn.style.display = "flex";
-      experienceStarted = true;
-      phonkAudio.play().then(() => {
-        audioBtn.textContent = "⏸ Pause Phonk";
-        audioStatus.textContent = "";
-      }).catch(() => {
-        audioBtn.textContent = "▶ Play Phonk";
-        audioStatus.textContent = "Tap Play Phonk to start the music.";
-      });
-    }
-
-    async function startExperience() {
-      if (experienceStarted) return;
-      toggleMenu(false);
-      menuBtn.style.display = "none";
-      introOverlay.style.display = "none";
-      introVideoContainer.style.display = "flex";
-      introVideo.currentTime = 0;
-      introSongAudio.currentTime = 0;
-
-      let videoStarted = false;
-      try {
-        await introVideo.play();
-        videoStarted = true;
-      } catch (error) {
-        console.warn("Intro video could not play:", error);
-      }
-      try {
-        await introSongAudio.play();
-      } catch (error) {
-        console.warn("Intro song could not play:", error);
-      }
-      if (!videoStarted) {
-        introVideoContainer.style.display = "flex";
-        const videoErrorFallback = () => showMainContent();
-        introVideo.addEventListener("error", videoErrorFallback, { once: true });
-        if (introVideo.readyState === 0 && introVideo.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) {
-          setTimeout(videoErrorFallback, 900);
-        }
-      }
-    }
-
-    document.getElementById("enterBtn").addEventListener("click", startExperience);
-    document.getElementById("videoSkipBtn").addEventListener("click", showMainContent);
-    introVideo.addEventListener("ended", showMainContent);
-    introVideo.addEventListener("error", () => {
-      if (introVideoContainer.style.display === "flex") showMainContent();
+      mainContent.style.display = "flex";
+      introSongAudio.play().catch(() => {});
+      phonkAudio.play().catch(() => {});
     });
 
-    async function togglePhonk() {
-      if (phonkAudio.paused) {
-        try {
-          await phonkAudio.play();
-          audioBtn.textContent = "⏸ Pause Phonk";
-          audioStatus.textContent = "";
-        } catch (error) {
-          audioBtn.textContent = "▶ Play Phonk";
-          audioStatus.textContent = "Couldn't play music. Check the MP3 filename.";
-        }
-      } else {
-        phonkAudio.pause();
-        audioBtn.textContent = "▶ Play Phonk";
-      }
+    // 2. Tap "Let's Start" to instantly trigger Future animation.mp4 without lag
+    document.getElementById("startAnimBtn").addEventListener("click", () => {
+      mainContent.style.display = "none";
+      animationContainer.style.display = "flex";
+      actionVideo.currentTime = 0;
+      actionVideo.play().catch(e => console.log("Video autoplay prevented", e));
+    });
+
+    // 3. Skip or end the animation video
+    function closeAnimation() {
+      animationContainer.style.display = "none";
+      mainContent.style.display = "flex";
     }
-    audioBtn.addEventListener("click", togglePhonk);
+    document.getElementById("videoSkipBtn").addEventListener("click", closeAnimation);
+    actionVideo.addEventListener("ended", closeAnimation);
   </script>
 </body>
-  </html>
-  
+</html>
