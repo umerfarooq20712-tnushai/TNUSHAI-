@@ -168,13 +168,13 @@
     </audio>
   </main>
 
-  <!-- STEP 4: FUTURE ANIMATION CONTAINER -->
+  <!-- STEP 4: FUTURE ANIMATION CONTAINER WITH SKIP BUTTON -->
   <section id="animation-container" aria-label="Future animation">
     <video id="actionVideo" playsinline preload="auto">
       <source src="Future animation.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    <button class="video-skip" id="videoSkipBtn" type="button">Skip ↗</button>
+    <button class="video-skip" id="actionSkipBtn" type="button">Skip ↗</button>
   </section>
 
   <!-- STEP 5: PROTOTYPE WELCOME MENU & TERMINAL -->
@@ -207,6 +207,7 @@
     const phonkAudio = document.getElementById("phonkAudio");
     const animationContainer = document.getElementById("animation-container");
     const actionVideo = document.getElementById("actionVideo");
+    const actionSkipBtn = document.getElementById("actionSkipBtn");
     const prototypeMenu = document.getElementById("prototype-menu");
     const canvas = document.getElementById("particleCanvas");
     const ctx = canvas.getContext("2d");
@@ -380,7 +381,7 @@
       menuBtn.style.display = "flex";
     }
 
-    document.getElementById("videoSkipBtn").addEventListener("click", finishAnimationSequence);
+    actionSkipBtn.addEventListener("click", finishAnimationSequence);
     actionVideo.addEventListener("ended", finishAnimationSequence);
 
     // Prototype Terminal Logic
@@ -390,6 +391,4 @@
     terminalInput.addEventListener("keydown", (e) => { if (e.key === "Enter") executeCommand(); });
 
     function executeCommand() {
-      const val = terminalInput.value.trim().toLowerCase();
-      if (!val) return;
-      let response =
+      const val = terminalInput.value.trim()
