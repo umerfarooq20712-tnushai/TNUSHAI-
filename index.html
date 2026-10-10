@@ -13,6 +13,15 @@
             box-sizing: border-box;
         }
 
+        :root {
+            --primary-color: #ff1a1a;
+            --primary-glow: rgba(255, 0, 0, 0.8);
+            --border-color: rgba(255, 0, 0, 0.7);
+            --bg-gradient: linear-gradient(135deg, #ff0000, #990000);
+            --box-bg: rgba(10, 10, 10, 0.82);
+            --shadow-color: rgba(255, 0, 0, 0.45);
+        }
+
         body {
             background-color: #0b0b0b;
             color: #ffffff;
@@ -23,6 +32,128 @@
             justify-content: center;
             min-height: 100vh;
             overflow: hidden;
+            transition: background 0.5s ease;
+        }
+
+        /* --- TOP LEFT MENU BUTTON & DRAWER --- */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(15, 15, 15, 0.85);
+            border: 2px solid var(--primary-color);
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 1002;
+            box-shadow: 0 0 15px var(--shadow-color);
+            transition: 0.3s ease;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: 0.3s ease;
+        }
+
+        /* Settings Drawer Menu */
+        .menu-drawer {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 260px;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(12px);
+            border-right: 2px solid var(--primary-color);
+            z-index: 1001;
+            transition: left 0.4s ease;
+            padding: 80px 20px 20px 20px;
+            box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .menu-drawer.open {
+            left: 0;
+        }
+
+        .menu-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .theme-toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-label {
+            font-size: 0.95rem;
+            color: #ddd;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Custom Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #333;
+            transition: 0.3s;
+            border-radius: 34px;
+            border: 1px solid #555;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #00bfff;
+            border-color: #00ffff;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(24px);
         }
 
         /* --- INTRO SCREEN OVERLAY --- */
@@ -42,8 +173,8 @@
             padding: 20px;
         }
 
-        /* FIRE PARTICLES CANVAS */
-        #fireCanvas {
+        /* PARTICLES CANVAS */
+        #particleCanvas {
             position: absolute;
             top: 0;
             left: 0;
@@ -58,16 +189,17 @@
         .intro-box {
             position: relative;
             z-index: 2;
-            background: rgba(10, 10, 10, 0.82);
+            background: var(--box-bg);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
-            border: 2px solid rgba(255, 0, 0, 0.7);
+            border: 2px solid var(--border-color);
             border-radius: 16px;
             padding: 40px 25px;
             text-align: center;
             max-width: 90%;
             width: 380px;
-            box-shadow: 0 0 35px rgba(255, 0, 0, 0.45), inset 0 0 20px rgba(255, 0, 0, 0.25);
+            box-shadow: 0 0 35px var(--shadow-color), inset 0 0 20px rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
         }
 
         .intro-title {
@@ -75,11 +207,12 @@
             font-size: 2.2rem;
             font-weight: 900;
             letter-spacing: 2px;
-            color: #ff1a1a;
+            color: var(--primary-color);
             margin-bottom: 12px;
             text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.9), 0 0 30px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 15px var(--primary-glow), 0 0 30px var(--primary-glow);
             line-height: 1.2;
+            transition: color 0.4s ease;
         }
 
         .hint-text {
@@ -93,8 +226,8 @@
 
         /* Large Pulsing Cyber Button */
         .unlock-btn {
-            background: linear-gradient(135deg, #ff0000, #990000);
-            border: 2px solid #ff4d4d;
+            background: var(--bg-gradient);
+            border: 2px solid var(--primary-color);
             color: #ffffff;
             padding: 18px 36px;
             font-family: 'Orbitron', sans-serif;
@@ -105,23 +238,22 @@
             border-radius: 10px;
             text-transform: uppercase;
             width: 100%;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
-            transition: all 0.2s ease-in-out;
+            box-shadow: 0 0 20px var(--shadow-color);
+            transition: all 0.3s ease-in-out;
             animation: pulse-glow 2s infinite alternate;
         }
 
         .unlock-btn:active, .unlock-btn:hover {
             transform: scale(1.04);
-            background: linear-gradient(135deg, #ff3333, #cc0000);
-            box-shadow: 0 0 35px rgba(255, 0, 0, 0.95);
+            box-shadow: 0 0 35px var(--primary-glow);
         }
 
         @keyframes pulse-glow {
             0% {
-                box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+                box-shadow: 0 0 15px var(--shadow-color);
             }
             100% {
-                box-shadow: 0 0 35px rgba(255, 0, 0, 0.95);
+                box-shadow: 0 0 35px var(--primary-glow);
             }
         }
 
@@ -161,26 +293,27 @@
             font-size: 2rem;
             letter-spacing: 2px;
             margin-bottom: 25px;
-            color: #ff1a1a;
+            color: var(--primary-color);
             text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+            text-shadow: 0 0 15px var(--primary-glow);
+            transition: color 0.4s ease;
         }
 
         .audio-control {
             background: #1a1a1a;
-            border: 2px solid #ff3333;
+            border: 2px solid var(--primary-color);
             color: #fff;
             padding: 16px 32px;
             font-family: 'Orbitron', sans-serif;
             font-size: 1.1rem;
             cursor: pointer;
             border-radius: 8px;
-            transition: 0.2s ease;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+            transition: 0.3s ease;
+            box-shadow: 0 0 15px var(--shadow-color);
         }
 
         .audio-control:hover {
-            background: #ff3333;
+            background: var(--primary-color);
             color: #000;
         }
 
@@ -198,10 +331,29 @@
 </head>
 <body>
 
+    <!-- TOP LEFT MENU BUTTON -->
+    <div class="menu-btn" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+    <!-- SETTINGS DRAWER -->
+    <div class="menu-drawer" id="menuDrawer">
+        <div class="menu-title">Control Panel</div>
+        <div class="theme-toggle-row">
+            <span class="theme-label" id="themeLabel">FIRE MODE</span>
+            <label class="switch">
+                <input type="checkbox" id="themeSwitch" onchange="toggleTheme()">
+                <span class="slider"></span>
+            </label>
+        </div>
+    </div>
+
     <!-- INTRO OVERLAY SCREEN -->
     <div id="intro-overlay">
-        <!-- CANVAS FOR ALL-BOUNDARY FIRE EMBERS -->
-        <canvas id="fireCanvas"></canvas>
+        <!-- CANVAS FOR DYNAMIC FIRE / SNOW PARTICLES -->
+        <canvas id="particleCanvas"></canvas>
 
         <div class="intro-box">
             <div class="intro-title">WHO IS MONTAGEM</div>
@@ -241,8 +393,43 @@
     </div>
 
     <script>
-        /* --- ALL-BOUNDARY FIRE ANIMATION ENGINE --- */
-        const canvas = document.getElementById('fireCanvas');
+        /* --- MENU DRAWER TOGGLE --- */
+        function toggleMenu() {
+            const drawer = document.getElementById('menuDrawer');
+            drawer.classList.toggle('open');
+        }
+
+        /* --- THEME SWITCH LOGIC (FIRE vs SNOW) --- */
+        let currentMode = 'fire'; // Default
+
+        function toggleTheme() {
+            const isSnow = document.getElementById('themeSwitch').checked;
+            const root = document.documentElement;
+            const themeLabel = document.getElementById('themeLabel');
+
+            if (isSnow) {
+                currentMode = 'snow';
+                themeLabel.textContent = "SNOW ICE MODE";
+                // Switch variables to Snowy Blue / Ice Theme
+                root.style.setProperty('--primary-color', '#00bfff');
+                root.style.setProperty('--primary-glow', 'rgba(0, 191, 255, 0.8)');
+                root.style.setProperty('--border-color', 'rgba(0, 191, 255, 0.7)');
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #00bfff, #0044cc)');
+                root.style.setProperty('--shadow-color', 'rgba(0, 191, 255, 0.45)');
+            } else {
+                currentMode = 'fire';
+                themeLabel.textContent = "FIRE MODE";
+                // Switch variables back to Red Hacker / Fire Theme
+                root.style.setProperty('--primary-color', '#ff1a1a');
+                root.style.setProperty('--primary-glow', 'rgba(255, 0, 0, 0.8)');
+                root.style.setProperty('--border-color', 'rgba(255, 0, 0, 0.7)');
+                root.style.setProperty('--bg-gradient', 'linear-gradient(135deg, #ff0000, #990000)');
+                root.style.setProperty('--shadow-color', 'rgba(255, 0, 0, 0.45)');
+            }
+        }
+
+        /* --- DYNAMIC PARTICLE ENGINE (FIRE EMBERS OR FALLING SNOW) --- */
+        const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
 
         function resizeCanvas() {
@@ -264,20 +451,38 @@
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 3 + 1;
-                this.speedX = (Math.random() - 0.5) * 2;
-                this.speedY = (Math.random() - 0.5) * 2;
                 this.opacity = Math.random() * 0.7 + 0.1;
-                const colors = ['#ff0000', '#ff3300', '#ff6600', '#e60000', '#cc0000'];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
+
+                if (currentMode === 'fire') {
+                    // Fire embers drift everywhere
+                    this.speedX = (Math.random() - 0.5) * 2;
+                    this.speedY = (Math.random() - 0.5) * 2;
+                    const colors = ['#ff0000', '#ff3300', '#ff6600', '#e60000', '#cc0000'];
+                    this.color = colors[Math.floor(Math.random() * colors.length)];
+                } else {
+                    // Snowflakes fall gently downwards with slight drift
+                    this.speedX = (Math.random() - 0.5) * 1;
+                    this.speedY = Math.random() * 1.5 + 0.5;
+                    this.color = '#ffffff';
+                }
             }
 
             update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                this.opacity -= 0.002;
-
-                if (this.opacity <= 0 || this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-                    this.spawnRandomly();
+                if (currentMode === 'fire') {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    this.opacity -= 0.002;
+                    if (this.opacity <= 0 || this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                        this.spawnRandomly();
+                    }
+                } else {
+                    // Snow behavior
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    if (this.y > canvas.height) {
+                        this.y = -10;
+                        this.x = Math.random() * canvas.width;
+                    }
                 }
             }
 
@@ -287,7 +492,7 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
-                ctx.shadowColor = '#ff0000';
+                ctx.shadowColor = currentMode === 'fire' ? '#ff0000' : '#00bfff';
                 ctx.shadowBlur = 8;
                 ctx.fill();
                 ctx.restore();
@@ -298,15 +503,15 @@
             particles.push(new Particle());
         }
 
-        function animateFire() {
+        function animateParticles() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             particles.forEach(p => {
                 p.update();
                 p.draw();
             });
-            requestAnimationFrame(animateFire);
+            requestAnimationFrame(animateParticles);
         }
-        animateFire();
+        animateParticles();
 
         /* --- INTRO EXPERIENCE CONTROLLER --- */
         const introOverlay = document.getElementById('intro-overlay');
@@ -357,4 +562,5 @@
     </script>
 
 </body>
-</html>
+    </html>
+    
