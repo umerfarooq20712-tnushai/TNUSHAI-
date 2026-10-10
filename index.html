@@ -168,7 +168,7 @@
     </audio>
   </main>
 
-  <!-- STEP 4: FUTURE ANIMATION CONTAINER WITH SKIP BUTTON -->
+  <!-- STEP 4: FUTURE ANIMATION CONTAINER -->
   <section id="animation-container" aria-label="Future animation">
     <video id="actionVideo" playsinline preload="auto">
       <source src="Future animation.mp4" type="video/mp4">
@@ -354,7 +354,7 @@
       introSongAudio.play().catch(e => console.log("Audio error", e));
     });
 
-    // When Intro Video Ends -> Show Dashboard
+    // STEP 2: When First Intro Video Ends -> Show Dashboard & Play Phonk
     introVideo.addEventListener("ended", () => {
       introSongAudio.pause();
       introVideoContainer.style.display = "none";
@@ -371,7 +371,7 @@
       actionVideo.play().catch(e => console.log("Animation play error", e));
     });
 
-    // Kill all audio and transition to Prototype Menu
+    // STEP 4: Kill all audio and transition to Prototype Menu (when skipped or ended)
     function finishAnimationSequence() {
       actionVideo.pause();
       phonkAudio.pause();
@@ -391,4 +391,4 @@
     terminalInput.addEventListener("keydown", (e) => { if (e.key === "Enter") executeCommand(); });
 
     function executeCommand() {
-      const val = terminalInput.value.trim()
+  
