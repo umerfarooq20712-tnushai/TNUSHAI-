@@ -32,19 +32,18 @@
             justify-content: center;
             min-height: 100vh;
             overflow: hidden;
-            transition: background 0.5s ease;
         }
 
-        /* --- TOP LEFT MENU BUTTON & DRAWER --- */
+        /* --- TOP LEFT MENU BUTTON (Fixed Z-Index so it stays on top) --- */
         .menu-btn {
             position: fixed;
             top: 20px;
             left: 20px;
-            background: rgba(15, 15, 15, 0.85);
+            background: rgba(15, 15, 15, 0.9);
             border: 2px solid var(--primary-color);
             color: #fff;
-            width: 45px;
-            height: 45px;
+            width: 48px;
+            height: 48px;
             border-radius: 10px;
             display: flex;
             flex-direction: column;
@@ -52,16 +51,17 @@
             align-items: center;
             gap: 5px;
             cursor: pointer;
-            z-index: 1002;
+            z-index: 10001; /* Highest priority so it floats over intro overlay */
             box-shadow: 0 0 15px var(--shadow-color);
             transition: 0.3s ease;
         }
 
         .menu-btn span {
             display: block;
-            width: 22px;
-            height: 2px;
+            width: 24px;
+            height: 3px;
             background-color: var(--primary-color);
+            border-radius: 2px;
             transition: 0.3s ease;
         }
 
@@ -69,15 +69,16 @@
         .menu-drawer {
             position: fixed;
             top: 0;
-            left: -280px;
-            width: 260px;
+            left: -290px;
+            width: 270px;
             height: 100%;
             background: rgba(10, 10, 10, 0.95);
             backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-right: 2px solid var(--primary-color);
-            z-index: 1001;
+            z-index: 10000;
             transition: left 0.4s ease;
-            padding: 80px 20px 20px 20px;
+            padding: 85px 20px 20px 20px;
             box-shadow: 10px 0 30px rgba(0, 0, 0, 0.8);
         }
 
@@ -106,7 +107,7 @@
         }
 
         .theme-label {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #ddd;
             font-family: 'Orbitron', sans-serif;
         }
@@ -428,7 +429,7 @@
             }
         }
 
-        /* --- DYNAMIC PARTICLE ENGINE (FIRE EMBERS OR FALLING SNOW) --- */
+        /* --- DYNAMIC PARTICLE ENGINE --- */
         const canvas = document.getElementById('particleCanvas');
         const ctx = canvas.getContext('2d');
 
@@ -454,13 +455,11 @@
                 this.opacity = Math.random() * 0.7 + 0.1;
 
                 if (currentMode === 'fire') {
-                    // Fire embers drift everywhere
                     this.speedX = (Math.random() - 0.5) * 2;
                     this.speedY = (Math.random() - 0.5) * 2;
                     const colors = ['#ff0000', '#ff3300', '#ff6600', '#e60000', '#cc0000'];
                     this.color = colors[Math.floor(Math.random() * colors.length)];
                 } else {
-                    // Snowflakes fall gently downwards with slight drift
                     this.speedX = (Math.random() - 0.5) * 1;
                     this.speedY = Math.random() * 1.5 + 0.5;
                     this.color = '#ffffff';
@@ -476,7 +475,6 @@
                         this.spawnRandomly();
                     }
                 } else {
-                    // Snow behavior
                     this.y += this.speedY;
                     this.x += this.speedX;
                     if (this.y > canvas.height) {
@@ -562,5 +560,4 @@
     </script>
 
 </body>
-    </html>
-    
+</html>
