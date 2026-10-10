@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CLASSIFIED</title>
+    <!-- Import Orbitron Cyberpunk Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -14,7 +16,7 @@
         body {
             background-color: #0b0b0b;
             color: #ffffff;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Share Tech Mono', monospace;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -23,7 +25,7 @@
             overflow-x: hidden;
         }
 
-        /* --- INTRO SCREEN (back ground.png) --- */
+        /* --- INTRO SCREEN OVERLAY --- */
         #intro-overlay {
             position: fixed;
             top: 0;
@@ -37,49 +39,79 @@
             align-items: center;
             justify-content: center;
             z-index: 999;
-        }
-
-        .intro-content {
-            text-align: center;
             padding: 20px;
         }
 
+        /* Styled Glassmorphism Card Box */
+        .intro-box {
+            background: rgba(10, 10, 10, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid rgba(255, 0, 0, 0.6);
+            border-radius: 16px;
+            padding: 40px 25px;
+            text-align: center;
+            max-width: 90%;
+            width: 380px;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.35), inset 0 0 15px rgba(255, 0, 0, 0.2);
+        }
+
         .intro-title {
-            font-size: 1.8rem;
-            letter-spacing: 3px;
-            color: #ff3333;
-            margin-bottom: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #ff1a1a;
+            margin-bottom: 12px;
             text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.8), 0 0 30px rgba(255, 0, 0, 0.4);
+            line-height: 1.2;
         }
 
         .hint-text {
-            font-size: 0.9rem;
-            color: #aaaaaa;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
+            font-size: 1.2rem;
+            color: #dddddd;
+            margin-bottom: 30px;
+            letter-spacing: 2px;
             text-transform: lowercase;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
         }
 
+        /* Large Pulsing Cyber Button */
         .unlock-btn {
-            background: #1a1a1a;
-            border: 2px solid #ff3333;
-            color: #fff;
-            padding: 14px 28px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1.1rem;
+            background: linear-gradient(135deg, #ff0000, #990000);
+            border: 2px solid #ff4d4d;
+            color: #ffffff;
+            padding: 18px 36px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            letter-spacing: 2px;
             cursor: pointer;
-            border-radius: 5px;
-            transition: 0.2s ease;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+            border-radius: 10px;
+            text-transform: uppercase;
+            width: 100%;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            transition: all 0.2s ease-in-out;
+            animation: pulse-glow 2s infinite alternate;
         }
 
-        .unlock-btn:hover {
-            background: #ff3333;
-            color: #000;
+        .unlock-btn:active, .unlock-btn:hover {
+            transform: scale(1.04);
+            background: linear-gradient(135deg, #ff3333, #cc0000);
+            box-shadow: 0 0 35px rgba(255, 0, 0, 0.9);
         }
 
-        /* --- INTRO VIDEO CONTAINER (Intro.mp4) --- */
+        @keyframes pulse-glow {
+            0% {
+                box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+            }
+            100% {
+                box-shadow: 0 0 30px rgba(255, 0, 0, 0.9);
+            }
+        }
+
+        /* --- INTRO VIDEO CONTAINER --- */
         #intro-video-container {
             display: none;
             position: fixed;
@@ -109,38 +141,42 @@
         }
 
         h1 {
-            font-size: 1.5rem;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2rem;
             letter-spacing: 2px;
-            margin-bottom: 20px;
-            color: #ff3333;
+            margin-bottom: 25px;
+            color: #ff1a1a;
             text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
         }
 
         .audio-control {
             background: #1a1a1a;
-            border: 1px solid #444;
+            border: 2px solid #ff3333;
             color: #fff;
-            padding: 12px 24px;
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 1rem;
+            padding: 16px 32px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.1rem;
             cursor: pointer;
-            border-radius: 5px;
+            border-radius: 8px;
             transition: 0.2s ease;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
         }
 
         .audio-control:hover {
-            background: #333;
-            border-color: #ff3333;
+            background: #ff3333;
+            color: #000;
         }
 
         .easter-egg {
-            margin-top: 40px;
-            font-size: 0.6rem;
-            color: #141414; /* Hidden dark gray */
+            margin-top: 50px;
+            font-size: 0.7rem;
+            color: #1a1a1a;
+            transition: color 0.3s;
         }
 
         .easter-egg:hover {
-            color: #444;
+            color: #666;
         }
     </style>
 </head>
@@ -148,8 +184,8 @@
 
     <!-- INTRO OVERLAY SCREEN -->
     <div id="intro-overlay">
-        <div class="intro-content">
-            <div class="intro-title">who is MONTAGEM</div>
+        <div class="intro-box">
+            <div class="intro-title">WHO IS MONTAGEM</div>
             <div class="hint-text">you can't find me</div>
             <button class="unlock-btn" onclick="startExperience()">Tap to Enter</button>
         </div>
@@ -195,33 +231,23 @@
         const audioBtn = document.getElementById('audioBtn');
 
         function startExperience() {
-            // Hide the image overlay
             introOverlay.style.display = 'none';
-            
-            // Show the video container
             introVideoContainer.style.display = 'flex';
 
-            // Reset time positions to start together
             introSongAudio.currentTime = 0;
             introVideo.currentTime = 0;
 
-            // Play intro song and video simultaneously on tap
             let playPromiseAudio = introSongAudio.play();
             let playPromiseVideo = introVideo.play();
 
             if (playPromiseAudio !== undefined) {
-                playPromiseAudio.catch(error => {
-                    console.log("Audio play error:", error);
-                });
+                playPromiseAudio.catch(error => console.log("Audio play error:", error));
             }
 
             if (playPromiseVideo !== undefined) {
-                playPromiseVideo.catch(error => {
-                    console.log("Video play error:", error);
-                });
+                playPromiseVideo.catch(error => console.log("Video play error:", error));
             }
 
-            // When Intro.mp4 finishes, stop sound and show main page
             introVideo.onended = function() {
                 introSongAudio.pause();
                 introVideoContainer.style.display = 'none';
