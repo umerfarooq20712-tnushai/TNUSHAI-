@@ -53,7 +53,7 @@
     }
     .theme-option-btn.active { background: var(--primary-color); color: #050505; border-color: #fff; box-shadow: 0 0 15px var(--primary-glow); }
     
-    /* FIRST INTRO OVERLAY */
+    /* STEP 1: INITIAL OVERLAY */
     #intro-overlay {
       position: fixed; inset: 0; background: #000 url("back ground.png") no-repeat center center;
       background-size: cover; display: flex; flex-direction: column; align-items: center;
@@ -73,31 +73,49 @@
     .unlock-btn { background: var(--bg-gradient); border: 2px solid var(--primary-color); color: #fff; padding: 16px 20px; font: 700 1.05rem Orbitron, sans-serif; letter-spacing: 1.5px; cursor: pointer; border-radius: 10px; width: 100%; box-shadow: 0 0 20px var(--shadow-color); animation: pulse-glow 2s infinite alternate; }
     @keyframes pulse-glow { from { box-shadow: 0 0 15px var(--shadow-color); } to { box-shadow: 0 0 35px var(--primary-glow); } }
 
-    /* --- INNER DASHBOARD WITH INCOGNITO.JPG BACKGROUND --- */
+    /* STEP 2: INTRO VIDEO CONTAINER */
+    #intro-video-container { display: none; position: fixed; inset: 0; background: #000; z-index: 50000; justify-content: center; align-items: center; }
+    #introVideo { width: 100%; height: 100%; object-fit: contain; background: #000; }
+
+    /* STEP 3: INNER DASHBOARD */
     #main-content {
-      display: none; position: fixed; inset: 0; background: #000 url("Incognito.jpg") no-repeat center center;
-      background-size: cover; text-align: center; padding: 24px 20px; width: 100%; height: 100%;
+      display: none; position: fixed; inset: 0; 
+      background: #000 url("Incognito.jpg") no-repeat center center;
+      background-size: contain; background-color: #0b0b0b;
+      text-align: center; padding: 24px 20px; width: 100%; height: 100%;
       flex-direction: column; align-items: center; justify-content: center; z-index: 2;
     }
-    #main-content::before { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.55); z-index: -1; }
-    
     .dashboard-box {
       background: var(--box-bg); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
-      border: 2px solid var(--border-color); border-radius: 16px; padding: 40px 30px;
-      max-width: 420px; width: 90%; box-shadow: 0 0 35px var(--shadow-color);
+      border: 2px solid var(--border-color); border-radius: 16px; padding: 35px 25px;
+      max-width: 380px; width: 90%; box-shadow: 0 0 35px var(--shadow-color);
     }
-    
-    h1 { font: 700 clamp(1.4rem, 5vw, 1.8rem) Orbitron, sans-serif; letter-spacing: 1px; margin-bottom: 25px; color: var(--primary-color); text-transform: uppercase; text-shadow: 0 0 15px var(--primary-glow); }
-    
-    .start-animation-btn { background: var(--bg-gradient); border: 2px solid var(--primary-color); color: #fff; padding: 16px 28px; font: 700 1.1rem Orbitron, sans-serif; cursor: pointer; border-radius: 10px; width: 100%; box-shadow: 0 0 20px var(--shadow-color); transition: 0.3s; }
+    h1 { font: 700 clamp(1.3rem, 4.5vw, 1.6rem) Orbitron, sans-serif; letter-spacing: 1px; margin-bottom: 22px; color: var(--primary-color); text-transform: uppercase; text-shadow: 0 0 15px var(--primary-glow); }
+    .start-animation-btn { background: var(--bg-gradient); border: 2px solid var(--primary-color); color: #fff; padding: 15px 24px; font: 700 1rem Orbitron, sans-serif; cursor: pointer; border-radius: 10px; width: 100%; box-shadow: 0 0 20px var(--shadow-color); transition: 0.3s; }
     .start-animation-btn:hover { transform: scale(1.03); box-shadow: 0 0 30px var(--primary-glow); }
 
-    /* --- FUTURE ANIMATION VIDEO CONTAINER --- */
-    #animation-container { display: none; position: fixed; inset: 0; background: #000; z-index: 50000; justify-content: center; align-items: center; }
+    /* STEP 4: FUTURE ANIMATION CONTAINER */
+    #animation-container { display: none; position: fixed; inset: 0; background: #000; z-index: 60000; justify-content: center; align-items: center; }
     #actionVideo { width: 100%; height: 100%; object-fit: contain; background: #000; }
     .video-skip { position: absolute; right: 20px; bottom: max(20px, env(safe-area-inset-bottom)); z-index: 2; padding: 10px 18px; background: rgba(0,0,0,0.8); border: 1px solid var(--primary-color); color: white; border-radius: 8px; font: 700 0.85rem Orbitron, sans-serif; cursor: pointer; }
 
-    @media (max-width: 420px) { .intro-box, .dashboard-box { padding: 30px 18px; } }
+    /* STEP 5: PROTOTYPE WELCOME MENU & TERMINAL */
+    #prototype-menu {
+      display: none; position: fixed; inset: 0; background: #070707; z-index: 70000;
+      flex-direction: column; align-items: center; justify-content: flex-start; padding: 30px 20px; overflow-y: auto;
+    }
+    .terminal-card {
+      background: rgba(12, 12, 12, 0.92); border: 2px solid var(--primary-color); border-radius: 12px;
+      width: 100%; max-width: 600px; padding: 25px; box-shadow: 0 0 30px var(--shadow-color);
+      margin-top: 50px; text-align: left;
+    }
+    .terminal-header { font-family: 'Orbitron', sans-serif; color: var(--primary-color); font-size: 1.1rem; margin-bottom: 15px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; }
+    .terminal-body { font-size: 0.9rem; color: #00ff66; line-height: 1.5; min-height: 120px; }
+    .terminal-input-row { display: flex; gap: 10px; margin-top: 15px; }
+    .terminal-input { background: #000; border: 1px solid var(--primary-color); color: #fff; padding: 10px; font-family: 'Share Tech Mono', monospace; flex: 1; border-radius: 6px; }
+    .terminal-send { background: var(--primary-color); color: #000; border: none; padding: 10px 18px; font-weight: bold; cursor: pointer; border-radius: 6px; font-family: 'Orbitron', sans-serif; }
+
+    @media (max-width: 420px) { .intro-box, .dashboard-box, .terminal-card { padding: 25px 15px; } }
   </style>
 </head>
 <body>
@@ -115,7 +133,7 @@
     </div>
   </aside>
 
-  <!-- STEP 1: INITIAL INTRO SCREEN -->
+  <!-- STEP 1: INITIAL OVERLAY -->
   <section id="intro-overlay" aria-label="Welcome screen">
     <canvas id="particleCanvas" aria-hidden="true"></canvas>
     <div class="intro-box">
@@ -125,12 +143,19 @@
     </div>
   </section>
 
-  <!-- BACKGROUND INTRO AUDIO -->
+  <!-- STEP 2: INTRO VIDEO CONTAINER -->
+  <section id="intro-video-container" aria-label="Intro video">
+    <video id="introVideo" playsinline preload="auto">
+      <source src="Intro.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </section>
+
   <audio id="introSongAudio" preload="auto">
     <source src="Intro song.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- STEP 2: INNER DASHBOARD (Incognito.jpg background + Let's Start button) -->
+  <!-- STEP 3: INNER DASHBOARD -->
   <main id="main-content">
     <div class="dashboard-box">
       <h1>Command Center</h1>
@@ -143,13 +168,29 @@
     </audio>
   </main>
 
-  <!-- STEP 3: FUTURE ANIMATION VIDEO (Preloaded for instant playback) -->
-  <section id="animation-container" aria-label="Animation video">
+  <!-- STEP 4: FUTURE ANIMATION CONTAINER -->
+  <section id="animation-container" aria-label="Future animation">
     <video id="actionVideo" playsinline preload="auto">
       <source src="Future animation.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
     <button class="video-skip" id="videoSkipBtn" type="button">Skip ↗</button>
+  </section>
+
+  <!-- STEP 5: PROTOTYPE WELCOME MENU & TERMINAL -->
+  <section id="prototype-menu" aria-label="Welcome Menu">
+    <div class="terminal-card">
+      <div class="terminal-header">&gt;&gt; SYSTEM_ONLINE // TERMINAL_ACTIVE</div>
+      <div class="terminal-body" id="terminalOutput">
+        [SYS] Authentication complete.<br>
+        [SYS] Welcome to the core dashboard, Architect.<br>
+        Type 'help' or click commands below to explore.
+      </div>
+      <div class="terminal-input-row">
+        <input type="text" id="terminalInput" class="terminal-input" placeholder="enter command..." />
+        <button type="button" class="terminal-send" id="terminalSend">EXEC</button>
+      </div>
+    </div>
   </section>
 
   <script>
@@ -159,11 +200,14 @@
     const menuBtn = document.getElementById("menuBtn");
     const menuDrawer = document.getElementById("menuDrawer");
     const introOverlay = document.getElementById("intro-overlay");
+    const introVideoContainer = document.getElementById("intro-video-container");
+    const introVideo = document.getElementById("introVideo");
     const introSongAudio = document.getElementById("introSongAudio");
     const mainContent = document.getElementById("main-content");
     const phonkAudio = document.getElementById("phonkAudio");
     const animationContainer = document.getElementById("animation-container");
     const actionVideo = document.getElementById("actionVideo");
+    const prototypeMenu = document.getElementById("prototype-menu");
     const canvas = document.getElementById("particleCanvas");
     const ctx = canvas.getContext("2d");
 
@@ -297,29 +341,55 @@
     resizeCanvas();
     animateParticles();
 
-    // 1. Enter site from first intro overlay
+    // STEP 1: Tap to Enter -> Play Intro Video & Song
     document.getElementById("enterBtn").addEventListener("click", () => {
       introOverlay.style.display = "none";
-      mainContent.style.display = "flex";
-      introSongAudio.play().catch(() => {});
-      phonkAudio.play().catch(() => {});
+      introVideoContainer.style.display = "flex";
+      menuBtn.style.display = "none";
+
+      introVideo.currentTime = 0;
+      introSongAudio.currentTime = 0;
+      introVideo.play().catch(e => console.log("Video error", e));
+      introSongAudio.play().catch(e => console.log("Audio error", e));
     });
 
-    // 2. Tap "Let's Start" to instantly trigger Future animation.mp4 without lag
+    // When Intro Video Ends -> Show Dashboard
+    introVideo.addEventListener("ended", () => {
+      introSongAudio.pause();
+      introVideoContainer.style.display = "none";
+      mainContent.style.display = "flex";
+      menuBtn.style.display = "flex";
+      phonkAudio.play().catch(e => console.log("Phonk play blocked", e));
+    });
+
+    // STEP 3: Tap "Let's Start" -> Play Future animation.mp4
     document.getElementById("startAnimBtn").addEventListener("click", () => {
       mainContent.style.display = "none";
       animationContainer.style.display = "flex";
       actionVideo.currentTime = 0;
-      actionVideo.play().catch(e => console.log("Video autoplay prevented", e));
+      actionVideo.play().catch(e => console.log("Animation play error", e));
     });
 
-    // 3. Skip or end the animation video
-    function closeAnimation() {
+    // Kill all audio and transition to Prototype Menu
+    function finishAnimationSequence() {
+      actionVideo.pause();
+      phonkAudio.pause();
+      phonkAudio.currentTime = 0;
       animationContainer.style.display = "none";
-      mainContent.style.display = "flex";
+      prototypeMenu.style.display = "flex";
+      menuBtn.style.display = "flex";
     }
-    document.getElementById("videoSkipBtn").addEventListener("click", closeAnimation);
-    actionVideo.addEventListener("ended", closeAnimation);
-  </script>
-</body>
-</html>
+
+    document.getElementById("videoSkipBtn").addEventListener("click", finishAnimationSequence);
+    actionVideo.addEventListener("ended", finishAnimationSequence);
+
+    // Prototype Terminal Logic
+    const terminalOutput = document.getElementById("terminalOutput");
+    const terminalInput = document.getElementById("terminalInput");
+    document.getElementById("terminalSend").addEventListener("click", executeCommand);
+    terminalInput.addEventListener("keydown", (e) => { if (e.key === "Enter") executeCommand(); });
+
+    function executeCommand() {
+      const val = terminalInput.value.trim().toLowerCase();
+      if (!val) return;
+      let response =
